@@ -4,7 +4,7 @@ class Person(object):
     class Fellow and Staff will inherit from
     '''
 
-    def __init__(self, person_id, firstname, lastname, gender, position):
+    def __init__(self, person_id, firstname, lastname, gender='', position=''):
         self.person_id = person_id
         self.firstname = firstname
         self.lastname = lastname
@@ -13,11 +13,11 @@ class Person(object):
 
 class Fellow(Person):
 
-    def __init__(self, person_id, firstname,lastname,gender,position):
-        super(Fellow, self).__init__(person_id, firstname, lastname, gender, position='fellow')
+    def __init__(self, person_id, firstname,lastname):
+        super(Fellow, self).__init__(person_id, firstname, lastname) #position='fellow')
 
 
 class Staff(Person):
 
-    def __init__(self, person_id, firstname, lastname, gender, position):
-        super(Staff, self).__init__(person_id, firstname, lastname, gender, position='staff')
+    def __init__(self, person_id, firstname, lastname):
+        super(Staff, self).__init__(person_id, firstname, lastname) #position='staff')

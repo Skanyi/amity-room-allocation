@@ -16,7 +16,21 @@ class TestAmity(TestCase):
         that is the male_wing and female_wing
         '''
         pass
-        
+
+    def test_add_person(self):
+        '''
+        Test that the person being added is not already in the system
+        '''
+        pass
+
+    def test_load_people(self):
+        '''
+        Check that every person does not exist in the system before
+        loading them.
+        '''
+        #ask more and read on this
+        pass
+
 
     def test_allocate_office(self):
         '''
