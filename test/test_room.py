@@ -9,7 +9,6 @@ class TestRoom(TestCase):
 
         office1 = Office('Carmel')
         self.assertEqual(office1.max_occupants, 6)
-        self.assertEqual(office1.room_type, 'office')
 
     def test_max_livingspace_occupants(self):
 

@@ -8,6 +8,8 @@ class Amity(object):
     staffs = []
     male_fellows = []
     female_fellows = []
+    room_name = ''
+    room_type = ''
 
     @staticmethod
     def create_room(room_name, room_type):
