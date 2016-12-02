@@ -1,14 +1,19 @@
 import unittest
 from unittest import TestCase
-from app.amity import Amity
+from app.amity import *
 
 class TestAmity(TestCase):
 
+    def setUp(self):
+        self.room1 = Amity()
+
     def test_create_room(self):
         '''
-        Check that the functions creates a room when called
+        Check that the room name is not in the rooms already
+        created.
         '''
-        pass
+        self.room1.create_room('Carmel', 'office')
+        self.assertIn('Carmel'.upper(), Amity.rooms)
 
     def test_room_wing(self):
         '''

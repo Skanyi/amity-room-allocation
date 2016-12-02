@@ -1,12 +1,16 @@
+from collections import defaultdict
+
 class Amity(object):
 
-    full_rooms  = {} # name of the room as the key and names of the occupants as the kvalues
-    not_full_rooms = {}
+    full_rooms  = defaultdict(list) # name of the room as the key and names of the occupants as the kvalues
+    not_full_rooms = defaultdict(list)
+    rooms = []
     staffs = []
     male_fellows = []
     female_fellows = []
 
-    def create_room(self):
+    @staticmethod
+    def create_room(room_name, room_type):
         '''
         Creates a room in Amity
         '''
