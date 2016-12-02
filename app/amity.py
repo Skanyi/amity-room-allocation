@@ -1,36 +1,11 @@
-from collections import defaultdict
-
 class Amity(object):
 
-    full_rooms  = defaultdict(list) # name of the room as the key and names of the occupants as the kvalues
-    not_full_rooms = defaultdict(list)
-    rooms = []
     staffs = []
     male_fellows = []
     female_fellows = []
     room_name = ''
     room_type = ''
 
-    @staticmethod
-    def create_room(room_name, room_type):
-        '''
-        Creates a room in Amity
-        '''
-        pass
-
-    def validate_room_type(self):
-        '''
-        Validates that the room is either #Office or #LivingSpace
-        '''
-        pass
-
-    def validate_wing(self, wing):
-        '''
-        if it is a living space, then validates that it is either
-        male_wing or female_wing
-        '''
-        self.wing = wing
-        pass
 
     def add_person(self):
         '''

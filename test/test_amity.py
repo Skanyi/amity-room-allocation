@@ -7,19 +7,6 @@ class TestAmity(TestCase):
     def setUp(self):
         self.room1 = Amity()
 
-    def test_create_room(self):
-
-        self.room1.create_room('Carmel', 'office')
-        self.assertIn(self.room1.room_name.upper(), Amity.rooms)
-
-    def test_room_is_office(self):
-        self.room1.create_room('Carmel', 'office')
-        self.assertEqual(self.room1.room_type.upper(), 'OFFICE')
-
-    def test_room_is_ls(self):
-        self.room1.create_room('PHP', 'livingspace')
-        self.assertEqual(self.room1.room_type.upper(), 'LIVINGSPACE')
-
     def test_room_wing(self):
         '''
         Ensures that only two type of living space wings are created,
