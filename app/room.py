@@ -31,13 +31,6 @@ class Room(object):
         '''
         pass
 
-    def validate_wing(self, wing):
-        '''
-        if it is a living space, then validates that it is either
-        male_wing or female_wing
-        '''
-        self.wing = wing
-        pass
 
 class Office(Room):
 

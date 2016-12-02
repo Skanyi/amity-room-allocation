@@ -1,8 +1,21 @@
 import unittest
 from unittest import TestCase
-from app.person import Person, Fellow, Staff
+from app.person import *
 
 class TestPerson(TestCase):
+
+    def test_add_person_staff(self):
+        staff1 = Person.add_person(1, 'steve', 'kanyi', 'M', 'Staff')
+        self.assertNotEqual(len(Person.staffs), 0)
+
+    def test_add_person_male_fellow(self):
+        m_fellow1 = Person.add_person(1, 'steve', 'kanyi', 'M', 'Staff')
+        self.assertNotEqual(len(Person.staffs), 0)
+
+    def test_add_person_female_fellow(self):
+        f_fellow1 = Person.add_person(1, 'steve', 'kanyi', 'M', 'Staff')
+        self.assertNotEqual(len(Person.staffs), 0)
+
 
     def test_position_is_fellow(self):
         fellow1 = Fellow(1, 'Steve', 'Kanyi')

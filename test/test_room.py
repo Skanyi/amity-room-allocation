@@ -11,7 +11,7 @@ class TestRoom(TestCase):
         self.assertIn('PHP', Room.rooms)
 
     def test_add_office_room(self):
-        Room.office_rooms = []
+        #Room.office_rooms = []
         office1 = Room.create_room('Carmel', 'office')
         self.assertNotEqual(len(Room.office_rooms), 0)
 
@@ -32,9 +32,10 @@ class TestRoom(TestCase):
         self.assertEqual(ls1.room_type.upper(), 'LIVINGSPACE')
 
     def test_add_ls_room(self):
-        Room.ls_rooms = []
+        #Room.ls_rooms = []
         ls1 = Room.create_room('Carmel', 'livingspace')
         self.assertNotEqual(len(Room.office_rooms), 0)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,31 +1,8 @@
 class Amity(object):
 
-    staffs = []
-    male_fellows = []
-    female_fellows = []
+    
     room_name = ''
     room_type = ''
-
-
-    def add_person(self):
-        '''
-        Add person details to the system
-        '''
-
-        pass
-
-    def validate_position(self):
-        '''
-        Validate that the person being added on the system is either
-        a fellow or Staff
-        '''
-        pass
-
-    def validate_gender(self):
-        '''
-        For living space alloction for the fellows, we use gender to group them
-        '''
-        pass
 
 
     def load_people(self):
