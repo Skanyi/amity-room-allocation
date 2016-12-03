@@ -15,21 +15,6 @@ class TestAmity(TestCase):
         #ask more and read on this
         pass
 
-
-    def test_allocate_office(self):
-        '''
-        Ensure that the office allocation is really random,
-        Ensure that the office is not full before allocation
-        '''
-        pass
-
-    def test_allocate_living_space(self):
-        '''
-        Ensure that the living space allocation is really random,
-        Ensure that the living space is not full before allocation
-        '''
-        pass
-
     def test_reallocate_person(self):
         '''
         Check that the id already exist. Confirm the room of reallocation

@@ -27,11 +27,19 @@ class TestPerson(TestCase):
 
     def test_gender_female(self):
         person1 = Person(1, 'Angie', 'Mugo')
-        self.assertEqual(person1.gender.upper(),'F')
+        self.assertEqual(person1.gender.upper(), 'F')
 
     def test_gender_male(self):
         person2 = Person(2, 'Steve', 'Kanyi')
         self.assertEqual(person2.gender.upper(), 'M')
+
+    def test_allocate_office(self):
+        person1 = Person.allocate_office()
+        self.assertNotEqual(len(Room.office_rooms.values()), 0)
+
+    def test_allocate_living_space(self):
+        person1 = Person.allocate_living_space()
+        self.assertNotEqual(len(Room.ls_rooms.values()), 0)
 
 if __name__ == '__main__':
     unittest.main()

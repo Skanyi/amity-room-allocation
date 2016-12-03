@@ -1,3 +1,5 @@
+from .room import Room
+
 class Person(object):
     '''
     Models the informtion of a person that the the
@@ -19,31 +21,32 @@ class Person(object):
         '''
         Add person details to the system
         '''
-
         pass
 
-    def validate_position(self):
+    @staticmethod
+    def allocate_office():
         '''
-        Validate that the person being added on the system is either
-        a fellow or Staff
-        '''
-        pass
-
-    def validate_gender(self):
-        '''
-        For living space alloction for the fellows, we use gender to group them
+        Allocates office to the people once they are added to the list
+        at rand1om. Allocates offices that are not full yet.
         '''
         pass
 
+    @staticmethod
+    def allocate_living_space(want_accomodation = 'N'):
+        '''
+        Allocates the fellows a living space if they want one.
+        Have a default value of No.
+        '''
+        pass
 
 
 class Fellow(Person):
 
-    def __init__(self, person_id, firstname,lastname):
-        super(Fellow, self).__init__(person_id, firstname, lastname) #position='fellow')
+    def __init__(self, *args, **kwargs):
+        super(Fellow, self).__init__(*args, **kwargs)
 
 
 class Staff(Person):
 
-    def __init__(self, person_id, firstname, lastname):
-        super(Staff, self).__init__(person_id, firstname, lastname) #position='staff')
+    def __init__(self, *args, **kwargs):
+        super(Staff, self).__init__(*args, **kwargs)

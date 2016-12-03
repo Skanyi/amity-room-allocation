@@ -6,11 +6,9 @@ class Room(object):
     Models all the information of the rooms that the office and Living space will
     inherit from
     '''
-    office_rooms = []
-    ls_rooms = []
+    office_rooms = defaultdict(list)
+    ls_rooms = defaultdict(list)
     rooms  = []
-    full_rooms  = defaultdict(list) # name of the room as the key and names of the occupants as the kvalues
-    not_full_rooms = defaultdict(list)
 
     def __init__(self, room_name='', room_type='', max_occupants=0):
         self.room_name = room_name
@@ -22,12 +20,6 @@ class Room(object):
     def create_room(room_name, room_type):
         '''
         Creates a room in Amity
-        '''
-        pass
-
-    def validate_room_type(self):
-        '''
-        Validates that the room is either #Office or #LivingSpace
         '''
         pass
 
