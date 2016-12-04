@@ -8,6 +8,7 @@ class Person(object):
     staffs = []
     male_fellows = []
     female_fellows = []
+    all_people = {}
 
     def __init__(self, person_id, firstname, lastname, gender='', position=''):
         self.person_id = person_id
@@ -24,18 +25,34 @@ class Person(object):
         pass
 
     @staticmethod
-    def allocate_office():
+    def allocate_office(room_name):
         '''
         Allocates office to the people once they are added to the list
-        at rand1om. Allocates offices that are not full yet.
+        at random. Allocates offices that are not full yet.
         '''
         pass
 
     @staticmethod
-    def allocate_living_space(want_accomodation = 'N'):
+    def allocate_living_space(room_name, want_accomodation = 'N'):
         '''
         Allocates the fellows a living space if they want one.
         Have a default value of No.
+        '''
+        pass
+
+    @staticmethod
+    def reallocate_person(person_id, new_room_name):
+        '''
+        use the person id to remove the person from one office
+        to another
+        '''
+        pass
+
+    @staticmethod
+    def is_full(room_name, room_type):
+        '''
+        check the room name and room type given if
+        it is full befor allocation
         '''
         pass
 

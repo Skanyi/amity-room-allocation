@@ -7,7 +7,7 @@ class Amity(object):
         pass
 
 
-    def reallocate_person(self, person_id):
+    def reallocate_person(self, person_id, room_name):
         '''
         reallocates a person with specific id to another room that is not full
         '''
@@ -26,11 +26,6 @@ class Amity(object):
         '''
         pass
 
-    def print_room(self):
-        '''
-        prints a room and all the people allocated to that room
-        '''
-        pass
 
     def load_state(self):
         '''

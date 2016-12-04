@@ -6,12 +6,12 @@ from app.room import *
 class TestRoom(TestCase):
 
     def test_room_does_not_exist(self):
-        self.room1 = Room()
-        self.room1.create_room('PHP', 'Office')
+        room1 = Room()
+        room1.create_room('PHP', 'Office')
         self.assertIn('PHP', Room.rooms)
 
     def test_add_office_room(self):
-        #Room.office_rooms = []
+        Room.office_rooms = []
         office1 = Room.create_room('Carmel', 'office')
         self.assertNotEqual(len(Room.office_rooms), 0)
 
@@ -32,10 +32,9 @@ class TestRoom(TestCase):
         self.assertEqual(ls1.room_type.upper(), 'LIVINGSPACE')
 
     def test_add_ls_room(self):
-        #Room.ls_rooms = []
+        Room.ls_rooms = []
         ls1 = Room.create_room('Carmel', 'livingspace')
-        self.assertNotEqual(len(Room.office_rooms), 0)
+        self.assertNotEqual(len(Room.ls_rooms), 0)
 
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_print_room(self):
+        pass

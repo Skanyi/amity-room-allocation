@@ -15,12 +15,6 @@ class TestAmity(TestCase):
         #ask more and read on this
         pass
 
-    def test_reallocate_person(self):
-        '''
-        Check that the id already exist. Confirm the room of reallocation
-        is not full
-        '''
-        pass
 
     def test_person_has_been_removed(self):
         '''
@@ -28,6 +22,14 @@ class TestAmity(TestCase):
         '''
         pass
 
+    def test_load_state(self):
+        '''
+        test if the data is loaded from the database to the app
+        '''
+        pass
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_save_state(self):
+        '''
+        test if the data in the app is saved to the database
+        '''
+        pass

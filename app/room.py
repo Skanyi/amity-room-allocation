@@ -23,14 +23,21 @@ class Room(object):
         '''
         pass
 
+    @staticmethod
+    def print_room(room_name):
+        '''
+        prints a room and all the people allocated to that room
+        '''
+        pass
+
 
 class Office(Room):
 
-    def __init__(self, room_name):
-        super(Office, self).__init__(room_name) #max_occupants = 6)
+    def __init__(self, *args, **kwargs):
+        super(Office, self).__init__(*args, **kwargs)
 
 
 class LivingSpace(Room):
 
-    def __init__(self, room_name):
-        super(LivingSpace, self).__init__(room_name) #max_occupants=4)
+    def __init__(self, *args, **kwargs):
+        super(LivingSpace, self).__init__(*args, **kwargs)

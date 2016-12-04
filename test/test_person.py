@@ -34,12 +34,15 @@ class TestPerson(TestCase):
         self.assertEqual(person2.gender.upper(), 'M')
 
     def test_allocate_office(self):
-        person1 = Person.allocate_office()
-        self.assertNotEqual(len(Room.office_rooms.values()), 0)
+        person1 = Person.allocate_office('Carmel')
+        self.assertNotEqual(len(Room.office_rooms['Carmel']), 0)
 
     def test_allocate_living_space(self):
-        person1 = Person.allocate_living_space()
-        self.assertNotEqual(len(Room.ls_rooms.values()), 0)
+        person1 = Person.allocate_living_space('PHP')
+        self.assertNotEqual(len(Room.ls_rooms['PHP']), 0)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_reallocate_person(self):
+        person1 = Person(1, 'Steve', 'Kanyi')
+        person1.reallocate_person(1, 'PHP')
+        self.assertIn(1, Person.all_people.keys())
+        self.assertIn('PHP', Room.rooms)
