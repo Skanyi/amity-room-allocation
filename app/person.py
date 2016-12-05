@@ -7,8 +7,7 @@ class Person(object):
     class Fellow and Staff will inherit from
     '''
     staffs = []
-    male_fellows = []
-    female_fellows = []
+    fellows = []
     all_people = {}
 
     def __init__(self, person_id, firstname, lastname, position=''):

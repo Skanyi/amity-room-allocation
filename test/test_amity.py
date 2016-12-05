@@ -22,12 +22,6 @@ class TestAmity(TestCase):
         mock_print.assert_called_with('Carmel')
         mock_print.assert_called_with('Steve, Kevin')
 
-    def test_person_has_been_removed(self):
-        '''
-        Check thats the person has been removed from the room after reallocation
-        '''
-        pass
-
     def test_load_state(self):
         '''
         test if the data is loaded from the database to the app
