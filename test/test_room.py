@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
+from app.person import *
 from app.room import *
-#from app.room import Office, LivingSpace
 
 class TestRoom(TestCase):
 
@@ -35,6 +35,3 @@ class TestRoom(TestCase):
         Room.ls_rooms = []
         ls1 = Room.create_room('Carmel', 'livingspace')
         self.assertNotEqual(len(Room.ls_rooms), 0)
-
-    def test_print_room(self):
-        pass

@@ -1,20 +1,26 @@
 import unittest
 from unittest import TestCase
 from app.amity import *
+import unittest.mock as mock
 
 class TestAmity(TestCase):
 
-    def setUp(self):
-        self.room1 = Amity()
+    @mock.patch('app.room.print', create=True)
+    def test_print_room_empty(self, mock_print):
+        Room.print_room('room_name')
+        mock_print.assert_called_with('room_name')
 
-    def test_load_people(self):
-        '''
-        Check that every person does not exist in the system before
-        loading them.
-        '''
-        #ask more and read on this
-        pass
-
+    @mock.patch('app.room.print', create=True)
+    def test_print_room_with_members(self, mock_print):
+        room1 = Room()
+        room1.create_room('Carmel', 'office')
+        person1 = Fellow(1, 'Steve', 'kanyi')
+        person2 = Staff(2, 'Kevin', 'Ndungu')
+        person1.allocate_office('Carmel')
+        person1.allocate_office('Carmel')
+        Room.print_room('Carmel')
+        mock_print.assert_called_with('Carmel')
+        mock_print.assert_called_with('Steve, Kevin')
 
     def test_person_has_been_removed(self):
         '''

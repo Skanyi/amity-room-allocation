@@ -1,5 +1,6 @@
 from .room import Room
 
+
 class Person(object):
     '''
     Models the informtion of a person that the the
@@ -10,17 +11,23 @@ class Person(object):
     female_fellows = []
     all_people = {}
 
-    def __init__(self, person_id, firstname, lastname, gender='', position=''):
+    def __init__(self, person_id, firstname, lastname, position=''):
         self.person_id = person_id
         self.firstname = firstname
         self.lastname = lastname
-        self.gender = gender
         self.position = position
 
     @staticmethod
-    def add_person(person_id, firstname, lastname, gender, position):
+    def add_person(person_id, firstname, lastname, position):
         '''
         Add person details to the system
+        '''
+        pass
+
+    @staticmethod
+    def load_people(filename):
+        '''
+        Loads people to the system from a text file.
         '''
         pass
 
@@ -45,14 +52,6 @@ class Person(object):
         '''
         use the person id to remove the person from one office
         to another
-        '''
-        pass
-
-    @staticmethod
-    def is_full(room_name, room_type):
-        '''
-        check the room name and room type given if
-        it is full befor allocation
         '''
         pass
 

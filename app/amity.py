@@ -1,18 +1,7 @@
+from .person import *
+from .room import *
+
 class Amity(object):
-
-    def load_people(self):
-        '''
-        Loads people to the system from a file.
-        '''
-        pass
-
-
-    def reallocate_person(self, person_id, room_name):
-        '''
-        reallocates a person with specific id to another room that is not full
-        '''
-        self.person_id = person_id
-        pass
 
     def print_allocation(self):
         '''
