@@ -8,7 +8,7 @@ class TestRoom(TestCase):
     def test_room_does_not_exist(self):
         room1 = Room()
         room1.create_room('PHP', 'Office')
-        self.assertIn('PHP', Room.rooms)
+        self.assertIn('PHP', Room.rooms, 'PHP does not exist')
 
     def test_add_office_room(self):
         Room.office_rooms = []
