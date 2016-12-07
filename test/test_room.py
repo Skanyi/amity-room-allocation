@@ -11,6 +11,7 @@ class TestRoom(TestCase):
 
     def test_create_office_room(self):
         Amity.office_rooms = []
+        self.assertEqual(len(Amity.office_rooms), 0)
         Amity.create_room('Carmel', 'office')
         self.assertNotEqual(len(Amity.office_rooms), 0)
 
@@ -32,5 +33,6 @@ class TestRoom(TestCase):
 
     def test_create_ls_room(self):
         Amity.ls_rooms = []
+        self.assertEqual(len(Amity.ls_rooms), 0)
         Amity.create_room('Carmel', 'livingspace')
         self.assertNotEqual(len(Amity.ls_rooms), 0)
