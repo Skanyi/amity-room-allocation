@@ -29,14 +29,18 @@ class TestPerson(TestCase):
     def test_allocate_office(self):
         Amity.create_room('Carmel', 'office')
         self.assertTrue('Carmel' in Amity.office_rooms)
+        previous_people_count = len(Amity.office_rooms['Carmel'])
         Amity.allocate_office('Carmel')
-        self.assertNotEqual(len(Amity.office_rooms['Carmel']), 0, 'person1 has not been added to the office')
+        current_people_count = len(Amity.office_rooms['Carmel'])
+        self.assertEqual(previous_people_count + 1, current_people_count, 'Has not been added to the office')
 
     def test_allocate_living_space(self):
-        Amity.create_room('PHP', 'livingspace')
-        self.assertTrue('PHP' in Amity.ls_rooms)
-        Amity.allocate_living_space('PHP')
-        self.assertNotEqual(len(Amity.ls_rooms['PHP']), 0, 'person1 has not been added to living space')
+        Amity.create_room('Go', 'livingspace')
+        self.assertTrue('Go' in Amity.ls_rooms)
+        previous_people_count = len(Amity.ls_rooms['Go'])
+        Amity.allocate_living_space('Go')
+        current_people_count = len(Amity.ls_rooms['Go'])
+        self.assertEqual(previous_people_count + 1, current_people_count, 'Has not been added to the office')
 
     def test_reallocate_person(self):
         Amity.reallocate_person(1, 'PHP')
