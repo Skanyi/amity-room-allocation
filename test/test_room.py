@@ -6,8 +6,10 @@ from app.room import *
 class TestRoom(TestCase):
 
     def test_room_does_not_exist(self):
-        room1 = Amity.create_room('PHP', 'Office')
-        self.assertIn('PHP', Amity.rooms, 'PHP does not exist')
+        Amity.create_room('Oculus', 'Office')
+        self.assertTrue('Oculus' in Amity.all_rooms)
+        response = Amity.create_room('Oculus', 'Office')
+        self.assertEqual(response, "Room already exists")
 
     def test_create_office_room(self):
         Amity.office_rooms = []

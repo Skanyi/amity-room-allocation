@@ -4,7 +4,7 @@ from .room import *
 class Amity(object):
     office_rooms = defaultdict(list)
     ls_rooms = defaultdict(list)
-    rooms  = []
+    all_rooms  = []
     staffs = []
     fellows = []
     all_people = {}
