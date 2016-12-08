@@ -1,21 +1,8 @@
 import unittest
 from unittest import TestCase
-from app.amity import *
 from app.room import *
 
 class TestRoom(TestCase):
-
-    def test_room_does_not_exist(self):
-        Amity.create_room('Oculus', 'Office')
-        self.assertTrue('Oculus' in Amity.all_rooms)
-        response = Amity.create_room('Oculus', 'Office')
-        self.assertEqual(response, "Room already exists")
-
-    def test_create_office_room(self):
-        Amity.office_rooms = []
-        self.assertEqual(len(Amity.office_rooms), 0)
-        Amity.create_room('Carmel', 'office')
-        self.assertNotEqual(len(Amity.office_rooms), 0)
 
     def test_max_office_occupants(self):
         office1 = Office('Carmel')
@@ -32,9 +19,3 @@ class TestRoom(TestCase):
     def test_room_is_ls(self):
         ls1 = LivingSpace('PHP')
         self.assertEqual(ls1.room_type.upper(), 'LIVINGSPACE')
-
-    def test_create_ls_room(self):
-        Amity.ls_rooms = []
-        self.assertEqual(len(Amity.ls_rooms), 0)
-        Amity.create_room('Carmel', 'livingspace')
-        self.assertNotEqual(len(Amity.ls_rooms), 0)
