@@ -12,9 +12,17 @@ class Amity(object):
     @staticmethod
     def create_room(room_name, room_type):
         '''
-        Creates a room in Amity
+        Check that the room does not exist and determine what type of room it is
         '''
-        
+        if room_name in Amity.all_rooms:
+            return 'Room already exists, Create another room with another name'
+        elif room_type.upper() == 'O':
+            all_rooms.append(room_name)
+            office_rooms['room_name']
+        elif room_type.upper() == 'L':
+            all_rooms.append(room_name)
+            ls_rooms['room_name']
+
 
     @staticmethod
     def add_person(person_id, firstname, lastname, position):
@@ -39,7 +47,7 @@ class Amity(object):
         pass
 
     @staticmethod
-    def allocate_living_space(room_name, want_accomodation = 'N'):
+    def allocate_living_space(room_name, wants_accomodation = 'N'):
         '''
         Allocates the fellows a living space if they want one.
         Have a default value of No.

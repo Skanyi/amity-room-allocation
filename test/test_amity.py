@@ -57,13 +57,16 @@ class TestAmity(TestCase):
         current_people_count = len(Amity.ls_rooms['Go'])
         self.assertEqual(previous_people_count + 1, current_people_count, 'Has not been added to the office')
 
-    '''def test_reallocate_person(self):
+    def test_reallocate_person(self):
+        self.assertIn('PHP', Amity.all_rooms)
         Amity.create_room('PHP', 'livingspace')
-        self.assertNotIn(1, Amity.ls_rooms['PHP'].keys())
+        self.assertIn('PHP', Amity.all_rooms)
+        Amity.add_person(1, 'steve', 'kanyi', 'F')
+        Amity.ls_rooms = {'PHP':[]}
+        self.assertNotIn(1, Amity.ls_rooms['PHP'])
         Amity.reallocate_person(1, 'PHP')
-        self.assertIn(1, Amity.all_people.keys(), 'person1 does not exist')
-        self.assertIn('PHP', Amity.rooms, 'PHP room does not exist')
-        '''
+        self.assertIn(1, Amity.ls_rooms['PHP'])
+
     @mock.patch('app.amity.open')
     def test_load_people_calls_open_function(self, mock_open):
         Amity.load_people('data/people.txt')

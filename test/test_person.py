@@ -7,8 +7,8 @@ class TestPerson(TestCase):
 
     def test_position_is_fellow(self):
         fellow1 = Fellow(2, 'Angie', 'Mugo')
-        self.assertEqual(fellow1.position.lower(), 'fellow', 'The position must be a fellow')
+        self.assertEqual(fellow1.position.upper(), 'FELLOW', 'The position must be a fellow')
 
     def test_position_is_staff(self):
         staff1 = Staff(3, 'Joshua', 'Mwaniki')
-        self.assertEqual(staff1.position.lower(), 'staff', 'The position must be a staff')
+        self.assertEqual(staff1.position.upper(), 'STAFF', 'The position must be a staff')

@@ -16,10 +16,10 @@ class Person(object):
 class Fellow(Person):
 
     def __init__(self, *args, **kwargs):
-        super(Fellow, self).__init__(*args, position = 'fellow')
+        super(Fellow, self).__init__(*args, **kwargs, position = 'fellow')
 
 
 class Staff(Person):
 
     def __init__(self, *args, **kwargs):
-        super(Staff, self).__init__(*args, position = 'staff')
+        super(Staff, self).__init__(*args, **kwargs, position = 'staff')
