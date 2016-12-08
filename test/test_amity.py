@@ -1,9 +1,10 @@
 import unittest
 from unittest import TestCase
-from app.amity import *
+from app.amity import Amity
 import unittest.mock as mock
 
 class TestAmity(TestCase):
+
 
     def test_room_does_not_exist(self):
         Amity.create_room('Oculus', 'Office')
@@ -17,11 +18,13 @@ class TestAmity(TestCase):
         Amity.create_room('Carmel', 'office')
         self.assertNotEqual(len(Amity.office_rooms), 0)
 
-    def test_create_ls_room(self):
-        Amity.ls_rooms = []
-        self.assertEqual(len(Amity.ls_rooms), 0)
-        Amity.create_room('Carmel', 'livingspace')
-        self.assertNotEqual(len(Amity.ls_rooms), 0)
+    def test_create_room(self):
+        previous_room_count = len(Amity.all_rooms)
+        self.assertFalse('Oculus' in Amity.all_rooms)
+        Amity.create_room('Oculus', 'Office')
+        self.assertTrue('Oculus' in Amity.all_rooms)
+        new_room_count = len(Amity.all_rooms)
+        self.assertEqual(self.previous_room_count + 1, new_room_count)
 
     def test_add_person_staff(self):
         Amity.staffs = []
@@ -36,12 +39,15 @@ class TestAmity(TestCase):
         self.assertNotEqual(len(Amity.fellows), 0, 'Person fellow has not been added')
 
     def test_allocate_office(self):
+        Amity.office_rooms = []
+        self.assertEqual(len(Amity.office_rooms), 0)
         Amity.create_room('Carmel', 'office')
-        self.assertTrue('Carmel' in Amity.office_rooms)
+        self.assertNotEqual(len(Amity.office_rooms), 0)
         previous_people_count = len(Amity.office_rooms['Carmel'])
         Amity.allocate_office('Carmel')
         current_people_count = len(Amity.office_rooms['Carmel'])
         self.assertEqual(previous_people_count + 1, current_people_count, 'Has not been added to the office')
+
 
     def test_allocate_living_space(self):
         Amity.create_room('Go', 'livingspace')
@@ -51,13 +57,13 @@ class TestAmity(TestCase):
         current_people_count = len(Amity.ls_rooms['Go'])
         self.assertEqual(previous_people_count + 1, current_people_count, 'Has not been added to the office')
 
-    def test_reallocate_person(self):
+    '''def test_reallocate_person(self):
         Amity.create_room('PHP', 'livingspace')
         self.assertNotIn(1, Amity.ls_rooms['PHP'].keys())
         Amity.reallocate_person(1, 'PHP')
         self.assertIn(1, Amity.all_people.keys(), 'person1 does not exist')
         self.assertIn('PHP', Amity.rooms, 'PHP room does not exist')
-
+        '''
     @mock.patch('app.amity.open')
     def test_load_people_calls_open_function(self, mock_open):
         Amity.load_people('data/people.txt')

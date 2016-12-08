@@ -14,7 +14,7 @@ class Amity(object):
         '''
         Creates a room in Amity
         '''
-        pass
+        
 
     @staticmethod
     def add_person(person_id, firstname, lastname, position):
