@@ -9,6 +9,9 @@ class Amity(object):
     staffs = []
     fellows = []
     all_people = {}
+    unallocated_person = {}
+    full_name = ""
+
 
     @staticmethod
     def create_room(room_name, room_type):
@@ -20,9 +23,13 @@ class Amity(object):
         elif room_type.upper() == 'O':
             Amity.all_rooms.append(room_name.upper())
             Amity.office_rooms[room_name.upper()]
+            current_room = LivingSpace()
         elif room_type.upper() == 'L':
             Amity.all_rooms.append(room_name.upper())
             Amity.ls_rooms[room_name.upper()]
+            current_room = Office()
+        else:
+            return '%s is an invalid room type' % room_type
 
     @staticmethod
     def add_person(person_id, firstname, lastname, position):
@@ -32,17 +39,23 @@ class Amity(object):
         if person_id in Amity.all_people.keys():
             return 'Person with %d id already exist.' % person_id
         elif position.upper() == 'F':
-            Amity.all_people[person_id] = firstname + " " + lastname
-            Amity.fellows.append(firstname + " " + lastname)
+            Amity.full_name = firstname + " " + lastname
+            Amity.all_people[person_id] = Amity.full_name
+            Amity.fellows.append(Amity.full_name)
+            fellow = Fellow(person_id, firstname, lastname)
+
         elif position.upper() == 'S':
-            Amity.all_people[person_id] = firstname + " " + lastname
-            Amity.staffs.append(firstname + " " + lastname)
+            Amity.full_name = firstname + " " + lastname
+            Amity.all_people[person_id] = Amity.full_name
+            Amity.staffs.append(Amity.full_name)
+            staff = Staff(person_id, firstname, lastname)
+            Amity.full_name = firstname + " " + lastname
         else:
             return '%s is not a valid position.' % position
     @staticmethod
     def load_people(filename):
         '''
-        Loads people to the system from a text file.
+        Loads people to the sstem from a text file.
         '''
         pass
 
@@ -52,11 +65,11 @@ class Amity(object):
         Allocates office to the people once they are added to the list
         at random. Allocates offices that are not full yet.
         '''
-        random_office = random.randint(0, len(Amity.office_rooms) - 1)
-        if len(Amity.office_rooms[list(Amity.office_rooms)[random_office]]) >= 6:
-            return 'Selected %s is full' % random_office
+        room_name = random.randint(0, len(Amity.office_rooms) - 1)
+        if len(Amity.office_rooms[list(Amity.office_rooms)[room_name]]) >= 6:
+            return 'Selected %s is full' % room_name
         else:
-            Amity.office_rooms[list(Amity.office_rooms)[random_office]].append(firstname + " " + lastname)
+            Amity.office_rooms[list(Amity.office_rooms)[room_name]].append(Amity.full_name)
             print('person Added succesfully')
 
     @staticmethod
@@ -65,7 +78,16 @@ class Amity(object):
         Allocates the fellows a living space if they want one.
         Have a default value of No.
         '''
-        pass
+        room_name = random.randint(0, len(Amity.ls_rooms) - 1)
+        if wants_accomodation == 'N':
+            return 'Thanks but the fellow does not want accomodation'
+        else:
+            if len(Amity.ls_rooms[list(Amity.ls_rooms)[room_name]]) >= 4:
+                return 'Selected %s is full' % room_name
+            else:
+                Amity.ls_rooms[list(Amity.ls_rooms)[room_name]].append(Amity.full_name)
+                print('Person added succesfully')
+
 
     @staticmethod
     def reallocate_person(person_id, new_room_name):
@@ -114,7 +136,3 @@ class Amity(object):
         Saves the data in the app to the database
         '''
         pass
-
-Amity.create_room('Oculus', 'O')
-Amity.create_room('go', 'l')
-Amity.create_room('Carmel', 'o')

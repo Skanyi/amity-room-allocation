@@ -33,13 +33,12 @@ class TestAmity(TestCase):
         self.assertNotEqual(len(Amity.staffs), 0, 'Person staff has not been added')
 
     def test_add_person_fellow(self):
-        #Amity.fellows = []
         self.assertEqual(len(Amity.fellows), 0)
         Amity.add_person(1, 'steve', 'kanyi', 'F')
         self.assertNotEqual(len(Amity.fellows), 0, 'Person fellow has not been added')
 
     def test_allocate_office(self):
-        Amity.create_room('Carmel', 'office')
+        Amity.create_room('Carmel', 'o')
         self.assertNotEqual(len(Amity.office_rooms), 0)
         previous_people_count = len(Amity.office_rooms['Carmel'])
         Amity.allocate_office('Carmel')
@@ -48,7 +47,7 @@ class TestAmity(TestCase):
 
 
     def test_allocate_living_space(self):
-        Amity.create_room('Go', 'livingspace')
+        Amity.create_room('Go', 'l')
         self.assertTrue('Go' in Amity.ls_rooms)
         previous_people_count = len(Amity.ls_rooms['Go'])
         Amity.allocate_living_space('Go')
