@@ -7,9 +7,9 @@ class TestAmity(TestCase):
 
 
     def test_room_does_not_exist(self):
-        Amity.create_room('Oculus', 'Office')
-        self.assertTrue('Oculus' in Amity.all_rooms)
-        response = Amity.create_room('Oculus', 'Office')
+        Amity.create_room('Oculus', 'O')
+        self.assertTrue('OCULUS' in Amity.all_rooms)
+        response = Amity.create_room('Oculus', 'O')
         self.assertEqual(response, "Room already exists")
 
     def test_create_office_room(self):
@@ -22,25 +22,23 @@ class TestAmity(TestCase):
         previous_room_count = len(Amity.all_rooms)
         self.assertFalse('Oculus' in Amity.all_rooms)
         Amity.create_room('Oculus', 'Office')
-        self.assertTrue('Oculus' in Amity.all_rooms)
+        self.assertTrue('Oculus'.upper() in Amity.all_rooms)
         new_room_count = len(Amity.all_rooms)
-        self.assertEqual(self.previous_room_count + 1, new_room_count)
+        self.assertEqual(previous_room_count + 1, new_room_count)
 
     def test_add_person_staff(self):
-        Amity.staffs = []
+        #Amity.staffs = []
         self.assertEqual(len(Amity.staffs), 0)
-        Amity.add_person(1, 'steve', 'kanyi', 'Staff')
+        Amity.add_person(2, 'steve', 'kanyi', 'S')
         self.assertNotEqual(len(Amity.staffs), 0, 'Person staff has not been added')
 
     def test_add_person_fellow(self):
-        Amity.fellows = []
+        #Amity.fellows = []
         self.assertEqual(len(Amity.fellows), 0)
-        Amity.add_person(1, 'steve', 'kanyi', 'Fellow')
+        Amity.add_person(1, 'steve', 'kanyi', 'F')
         self.assertNotEqual(len(Amity.fellows), 0, 'Person fellow has not been added')
 
     def test_allocate_office(self):
-        Amity.office_rooms = []
-        self.assertEqual(len(Amity.office_rooms), 0)
         Amity.create_room('Carmel', 'office')
         self.assertNotEqual(len(Amity.office_rooms), 0)
         previous_people_count = len(Amity.office_rooms['Carmel'])

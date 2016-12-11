@@ -10,7 +10,7 @@ class TestRoom(TestCase):
 
     def test_room_is_office(self):
         office1 = Office('Carmel')
-        self.assertEqual(office1.room_type.upper(), 'OFFICE')
+        self.assertEqual(office1.room_type.upper(), 'O')
 
     def test_max_livingspace_occupants(self):
         ls1 = LivingSpace('PHP')
@@ -18,4 +18,4 @@ class TestRoom(TestCase):
 
     def test_room_is_ls(self):
         ls1 = LivingSpace('PHP')
-        self.assertEqual(ls1.room_type.upper(), 'LIVINGSPACE')
+        self.assertEqual(ls1.room_type.upper(), 'L')

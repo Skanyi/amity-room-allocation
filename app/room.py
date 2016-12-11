@@ -16,10 +16,10 @@ class Room(object):
 class Office(Room):
 
     def __init__(self, *args, **kwargs):
-        super(Office, self).__init__(*args, max_occupants = 6)
+        super(Office, self).__init__(*args, room_type='O', max_occupants=6)
 
 
 class LivingSpace(Room):
 
     def __init__(self, *args, **kwargs):
-        super(LivingSpace, self).__init__(*args, max_occupants = 4)
+        super(LivingSpace, self).__init__(*args, room_type='L', max_occupants=4)
