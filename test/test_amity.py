@@ -15,19 +15,18 @@ class TestAmity(TestCase):
     def test_create_office_room(self):
         Amity.office_rooms = []
         self.assertEqual(len(Amity.office_rooms), 0)
-        Amity.create_room('Carmel', 'office')
+        Amity.create_room('Carmel', 'o')
         self.assertNotEqual(len(Amity.office_rooms), 0)
 
     def test_create_room(self):
         previous_room_count = len(Amity.all_rooms)
         self.assertFalse('Oculus' in Amity.all_rooms)
-        Amity.create_room('Oculus', 'Office')
+        Amity.create_room('Oculus', 'O')
         self.assertTrue('Oculus'.upper() in Amity.all_rooms)
         new_room_count = len(Amity.all_rooms)
         self.assertEqual(previous_room_count + 1, new_room_count)
 
     def test_add_person_staff(self):
-        #Amity.staffs = []
         self.assertEqual(len(Amity.staffs), 0)
         Amity.add_person(2, 'steve', 'kanyi', 'S')
         self.assertNotEqual(len(Amity.staffs), 0, 'Person staff has not been added')
