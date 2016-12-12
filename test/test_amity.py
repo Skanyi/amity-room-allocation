@@ -38,7 +38,7 @@ class TestAmity(TestCase):
 
     def test_allocate_office(self):
         Amity.create_room('Carmel', 'o')
-        self.assertNotEqual(len(Amity.office_rooms), 0)
+        self.assertTrue('Carmel'.upper() in Amity.office_rooms)
         previous_people_count = len(Amity.office_rooms['Carmel'])
         Amity.allocate_office('Carmel')
         current_people_count = len(Amity.office_rooms['Carmel'])
@@ -47,7 +47,7 @@ class TestAmity(TestCase):
 
     def test_allocate_living_space(self):
         Amity.create_room('Go', 'l')
-        self.assertTrue('Go' in Amity.ls_rooms)
+        self.assertTrue('Go'.upper() in Amity.ls_rooms)
         previous_people_count = len(Amity.ls_rooms['Go'])
         Amity.allocate_living_space('Go')
         current_people_count = len(Amity.ls_rooms['Go'])
