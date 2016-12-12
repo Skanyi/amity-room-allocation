@@ -43,10 +43,10 @@ class TestAmity(TestCase):
     def test_generate_random_living_space_from_ls_rooms(self):
         random_ls = Amity.generate_random_living_space()
         self.assertTrue(random_ls in Amity.ls_rooms)
-    
+
     def test_reallocate_person(self):
-        self.assertIn('PHP', Amity.all_rooms)
-        Amity.create_room('PHP', 'livingspace')
+        self.assertNotIn('PHP', Amity.all_rooms)
+        Amity.create_room('PHP', 'l')
         self.assertIn('PHP', Amity.all_rooms)
         Amity.add_person(1, 'steve', 'kanyi', 'F')
         Amity.ls_rooms = {'PHP':[]}

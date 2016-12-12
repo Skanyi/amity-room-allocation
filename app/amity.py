@@ -90,8 +90,15 @@ class Amity(object):
                 people_details = readlines(people_file)
                 people_details = people_details.split()
                 if len(people_details) == 5:
-                    Amity.add_person(person_id=people_details[0], firstname=people_details[1], lastname=people_details[2], position=people_details[3])
-
+                    Amity.add_person(person_id=people_details[0], firstname=people_details[1], lastname=people_details[2],
+                    position=people_details[3], wants_accomodation=people_details[4])
+                elif len(people_details) == 4:
+                    Amity.add_person(person_id=people_details[0], firstname=people_details[1], lastname=people_details[2],
+                    position=people_details[3], wants_accomodation='N')
+                else:
+                    print('Cannot process the data provided')
+        else:
+            print('Provide a file, please')
 
 
     @staticmethod
@@ -138,11 +145,15 @@ class Amity(object):
         '''
         print(room_name)
 
-    def print_allocation(self):
+    @staticmethod
+    def print_allocation():
         '''
         prints a list of all the people that have been allocated a room
         '''
-        pass
+        for room, name, in Amity.office_rooms.items():
+            print(room)
+            print('.................................\n')
+            print(', '.join(name))
 
     def print_unallocated(self):
         '''

@@ -1,17 +1,16 @@
-class Trial(object):
-    """docstring for ."""
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-        self.full_name = ''
+detail = "1 OLUWAFEMI SULE FELLOW"
 
+detail = detail.split()
 
-    def try1(self, name):
-        full_name = name
-        return full_name
+if len(detail) == 5:
+    print('a fellow')
+else:
+    print('Staff')
 
+import random
+d = {'r1': ['steve', 'kanyi'], 'r2': ['doug'], 'r3': ['angi'], 'r4': ['mbug'], 'r5': ['kanyi']}
 
-    def try2(self):
-        return Trial.try1(self, self.full_name)
-one = Trial('steve' , 24)
-print(one.try1('stve'))
+for r, v in d.items():
+    print(r)
+    print('...............................................\n')
+    print(', '.join(v))
