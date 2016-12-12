@@ -39,40 +39,40 @@ class Amity(object):
         if person_id in Amity.all_people.keys():
             return 'Person with %d id already exist.' % person_id
 
-        elif position.upper() == 'fellow' and wants_accomodation == 'N':
+        elif position.upper() == 'f' and wants_accomodation == 'N':
             Amity.all_people[person_id] = full_name
             Amity.fellows.append(full_name)
             fellow = Fellow(person_id, firstname, lastname)
-            random_office = generate_random_office()
+            random_office = Amity.generate_random_office()
             Amity.office_rooms[random_office].append(full_name)
             print("Added: " + full_name + " and allocated them to: " + random_office)
             Amity.unallocated_person.append(full_name)
             print(full_name + " does not need a living space, added to unallocated")
 
-        elif position.upper() == 'Fellow' and wants_accomodation == 'Y':
+        elif position.upper() == 'F' and wants_accomodation == 'Y':
             Amity.all_people[person_id] = full_name
             Amity.fellows.append(full_name)
             fellow = Fellow(person_id, firstname, lastname)
-            random_office = generate_random_office()
+            random_office = Amity.generate_random_office()
             Amity.office_rooms[random_office].append(full_name)
             print("Added: " + full_name + " and allocated them to: " + random_office)
-            random_ls = generate_random_living_space()
+            random_ls = Amity.generate_random_living_space()
             Amity.ls_rooms[random_ls].append(full_name)
             print("Added: " + full_name + " and allocated them to: " + random_ls)
 
-        elif position.upper() == 'staff' and wants_accomodation == 'N':
+        elif position.upper() == 'S' and wants_accomodation == 'N':
             Amity.all_people[person_id] = full_name
             Amity.staffs.append(full_name)
             staff = Staff(person_id, firstname, lastname)
-            random_office = generate_random_office()
+            random_office = Amity.generate_random_office()
             Amity.office_rooms[random_office].append(full_name)
             print("Added: " + full_name + " and allocated them to: " + random_office)
 
-        elif position.upper() == 'staff' and wants_accomodation == 'Y':
+        elif position.upper() == 'S' and wants_accomodation == 'Y':
             Amity.all_people[person_id] = full_name
             Amity.staffs.append(full_name)
             staff = Staff(person_id, firstname, lastname)
-            random_office = generate_random_office()
+            random_office = Amity.generate_random_office()
             Amity.office_rooms[random_office].append(full_name)
             print("Added: " + full_name + " and allocated them to: " + random_office)
             print('Staff cannot be llocated a living space')
@@ -99,36 +99,35 @@ class Amity(object):
         '''
         Generates a random office that is not full
         '''
-        random_room_name = random.choice(list(Amity.office_rooms))
-        if len(random_room_name) >= 6:
-            return 'Selected %s is full' % room_name
+        if len(Amity.office_rooms) > 0:
+            random_room_name = random.choice(list(Amity.office_rooms))
+            if len(Amity.office_rooms[random_room_name]) >= 6:
+                return 'Selected %s is full' % random_room_name
+            else:
+                return random_room_name
         else:
-            return random_room_name
+            return 'There are no office rooms available'
 
     @staticmethod
     def generate_random_living_space():
         '''
         Generate a random living space that is not fulloccupied
         '''
-        random_room_name = random.choice(list(Amity.ls_rooms))
-        if len(random_room_name) >= 4:
-            return 'Selected %s is full' % room_name
+        if len(Amity.ls_rooms)> 0:
+
+            random_room_name = random.choice(list(Amity.ls_rooms))
+            if len(Amity.ls_rooms[random_room_name]) >= 4:
+                return 'Selected %s is full' % random_room_name
+            else:
+                return random_room_name
         else:
-            return random_room_name
+            return 'There are no living space available'
 
     @staticmethod
     def reallocate_person(person_id, new_room_name):
         '''
         use the person id to remove the person from one office
         to another
-        '''
-        pass
-
-    @staticmethod
-    def is_full(room_name, room_type):
-        '''
-        check the room name and room type given if
-        it is full before allocation
         '''
         pass
 

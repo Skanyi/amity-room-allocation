@@ -12,12 +12,6 @@ class TestAmity(TestCase):
         response = Amity.create_room('Oculus', 'O')
         self.assertEqual(response, "Room already exists")
 
-    def test_create_office_room(self):
-        Amity.office_rooms = []
-        self.assertEqual(len(Amity.office_rooms), 0)
-        Amity.create_room('Carmel', 'o')
-        self.assertNotEqual(len(Amity.office_rooms), 0)
-
     def test_create_room(self):
         previous_room_count = len(Amity.all_rooms)
         self.assertFalse('Oculus' in Amity.all_rooms)
@@ -27,32 +21,29 @@ class TestAmity(TestCase):
         self.assertEqual(previous_room_count + 1, new_room_count)
 
     def test_add_person_staff(self):
-        self.assertEqual(len(Amity.staffs), 0)
-        Amity.add_person(2, 'steve', 'kanyi', 'S')
-        self.assertNotEqual(len(Amity.staffs), 0, 'Person staff has not been added')
+        previous_staff_count = len(Amity.staffs)
+        self.assertFalse(2 in Amity.all_people)
+        Amity.add_person(2, 'steve', 'kanyi', 'S', 'N')
+        self.assertTrue(2 in Amity.all_people)
+        current_staff_count = len(Amity.staffs)
+        self.assertEqual(previous_staff_count + 1, current_staff_count,  'Person staff has not been added')
 
     def test_add_person_fellow(self):
-        self.assertEqual(len(Amity.fellows), 0)
-        Amity.add_person(1, 'steve', 'kanyi', 'F')
-        self.assertNotEqual(len(Amity.fellows), 0, 'Person fellow has not been added')
+        previous_fellow_count = len(Amity.fellows)
+        self.assertFalse(1 in Amity.all_people)
+        Amity.add_person(1, 'steve', 'kanyi', 'F', 'Y')
+        self.assertTrue(1 in Amity.all_people)
+        current_fellow_count = len(Amity.fellows)
+        self.assertEqual(previous_fellow_count + 1, current_fellow_count, 'Person fellow has not been added')
 
-    def test_allocate_office(self):
-        Amity.create_room('Carmel', 'o')
-        self.assertTrue('Carmel'.upper() in Amity.office_rooms)
-        previous_people_count = len(Amity.office_rooms['Carmel'])
-        Amity.allocate_office('Carmel')
-        current_people_count = len(Amity.office_rooms['Carmel'])
-        self.assertEqual(previous_people_count + 1, current_people_count, 'Has not been added to the office')
+    def test_generate_random_office_from_office_rooms(self):
+        random_office = Amity.generate_random_office()
+        self.assertTrue(random_office in Amity.office_rooms)
 
-
-    def test_allocate_living_space(self):
-        Amity.create_room('Go', 'l')
-        self.assertTrue('Go'.upper() in Amity.ls_rooms)
-        previous_people_count = len(Amity.ls_rooms['Go'])
-        Amity.allocate_living_space('Go')
-        current_people_count = len(Amity.ls_rooms['Go'])
-        self.assertEqual(previous_people_count + 1, current_people_count, 'Has not been added to the office')
-
+    def test_generate_random_living_space_from_ls_rooms(self):
+        random_ls = Amity.generate_random_living_space()
+        self.assertTrue(random_ls in Amity.ls_rooms)
+    
     def test_reallocate_person(self):
         self.assertIn('PHP', Amity.all_rooms)
         Amity.create_room('PHP', 'livingspace')
