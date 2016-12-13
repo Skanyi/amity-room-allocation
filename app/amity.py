@@ -39,7 +39,7 @@ class Amity(object):
         if person_id in Amity.all_people.keys():
             return 'Person with %d id already exist.' % person_id
 
-        elif position.upper() == 'f' and wants_accomodation == 'N':
+        elif position.upper() == 'F' and wants_accomodation == 'N':
             Amity.all_people[person_id] = full_name
             Amity.fellows.append(full_name)
             fellow = Fellow(person_id, firstname, lastname)
@@ -87,7 +87,7 @@ class Amity(object):
         '''
         if filename:
             with open(filename) as people_file:
-                people_details = readlines(people_file)
+                people_details = people_file.readlines()
                 people_details = people_details.split()
                 if len(people_details) == 5:
                     Amity.add_person(person_id=people_details[0], firstname=people_details[1], lastname=people_details[2],
