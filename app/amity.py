@@ -133,7 +133,7 @@ class Amity(object):
     @staticmethod
     def reallocate_person(person_id, new_room_name):
         '''
-        use the person id to remove the person from one office
+        use the person full name to remove the person from one office
         to another
         '''
         pass
@@ -150,16 +150,26 @@ class Amity(object):
         '''
         prints a list of all the people that have been allocated a room
         '''
+        print('People in offices')
         for room, name, in Amity.office_rooms.items():
             print(room)
             print('.................................\n')
             print(', '.join(name))
 
-    def print_unallocated(self):
+        print('People in Living space rooms)
+        for room, name, in Amity.ls_rooms.items():
+            print(room)
+            print('.................................\n')
+            print(', '.join(name))
+
+    @staticmethod
+    def print_unallocated():
         '''
         prints a list of people that have not been allocated to a room yet
         '''
-        pass
+        print('People not in an room')
+        for name in Amity.unallocated_person:
+            print(name)
 
 
     def load_state(self):
@@ -173,3 +183,13 @@ class Amity(object):
         Saves the data in the app to the database
         '''
         pass
+
+
+Amity.create_room('PHP', 'l')
+Amity.create_room('Narnia', 'o')
+Amity.add_person(1, 'steve', 'kanyi', 'f')
+Amity.add_person(2, 'Joseph', 'Njogu', 'f', 'Y')
+print(Amity.office_rooms)
+print(Amity.ls_rooms)
+Amity.print_allocation()
+Amity.print_unallocated()
