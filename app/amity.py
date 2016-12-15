@@ -143,7 +143,17 @@ class Amity(object):
         '''
         prints a room and all the people allocated to that room
         '''
-        print(room_name)
+        print('People in php')
+        if room_name in Amity.office_rooms.keys():
+            print(room_name)
+            print('------------------------------------')
+            print(', '.join(Amity.office_rooms[room_name]))
+
+        if room_name in Amity.ls_rooms.keys():
+            print(room_name)
+            print('------------------------------------')
+            print(' ,'.join(Amity.ls_rooms[room_name]))
+
 
     @staticmethod
     def print_allocation():
@@ -156,7 +166,7 @@ class Amity(object):
             print('.................................\n')
             print(', '.join(name))
 
-        print('People in Living space rooms)
+        print('People in Living space rooms')
         for room, name, in Amity.ls_rooms.items():
             print(room)
             print('.................................\n')
@@ -193,3 +203,4 @@ print(Amity.office_rooms)
 print(Amity.ls_rooms)
 Amity.print_allocation()
 Amity.print_unallocated()
+Amity.print_room('PHP')
