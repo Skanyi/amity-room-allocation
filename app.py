@@ -53,5 +53,12 @@ def docopt_cmd(func):
 class AmityApplication(cmd.Cmd):
     prompt = "Amity -->"
 
+    @docopt_cmd
+    def do_create_room(self, arg):
+        r_name = arg["<room_name>"]
+        r_type = arg["<room_type>"]
+        Amity.create_room(r_name.upper(), r_type.upper())
+
+
 if __name__ == '__main__':
     AmityApplication().cmdloop()
