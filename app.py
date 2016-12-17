@@ -1,7 +1,7 @@
 '''
 Usage:
-    add_person <person_id> <first_name> <last_name> <F|S> [wants_accomodation=N]
-    create_room <room_type> <room_name>...
+    add_person <person_id> <first_name> <last_name> <F|S> [--wants_accomodation=N]
+    create_room <room_name> <room_type>
     reallocate_person <person_id> <new_room_name>
     load_people <filename>
     print_allocations [--o=filename]
@@ -12,11 +12,13 @@ Usage:
     quit
 Options:
     -h, --help  Show this screen and exit
+    --wants_accomodation=<N> [defult: N]
 '''
 
 from app.amity import Amity
 import sys
 import cmd
+import os
 from docopt import docopt, DocoptExit
 
 
@@ -55,10 +57,51 @@ class AmityApplication(cmd.Cmd):
 
     @docopt_cmd
     def do_create_room(self, arg):
+        '''Usage: create_room <room_name> <room_type>'''
         r_name = arg["<room_name>"]
         r_type = arg["<room_type>"]
-        Amity.create_room(r_name.upper(), r_type.upper())
+        print(r_name, r_type)
+        Amity.create_room(r_name.upper(), ''.join(r_type))
 
+    @docopt_cmd
+    def do_add_person(self, arg):
+        '''Usage: add_person <person_id> <firstname> <lastname> <position> [--wants_accomodation=N] '''
+        p_id = arg["<person_id>"]
+        f_name = arg["<firstname>"]
+        l_name = arg["<lastname>"]
+        pos = arg["<position>"]
+        wants_accomodation = arg["--wants_accomodation"]
+
+        if wants_accomodation:
+            Amity.add_person(p_id, f_name, l_name, pos, wants_accomodation)
+        else:
+            Amity.add_person(p_id, f_name, l_name, pos)
+
+    @docopt_cmd
+    def do_load_people(self, arg):
+        ''' Usage: load_people <filename>'''
+        file_n = arg["<filename>"]
+        if os.path.exists(file_n):
+            Amity.load_people(file_n)
+        else:
+            print("File not found")
+
+        Amity.load_people(arg["<filename>"])
+
+    @docopt_cmd
+    def do_reallocate_person(self, arg):
+        ''' Usage: reallocate_person <firstname> <lastname> <new_room_name>'''
+        first_name = arg["<firstname>"]
+        last_name = arg["<lastname>"]
+        full_name = first_name + " " + last_name
+        new_room = arg["<new_room_name>"]
+
+        if new_room.upper() in Amity.office_rooms:
+            Amity.reallocate_person_from_office(f_name, new_room)
+        elif new_room.upper() in Amity.ls_rooms:
+            Amity.reallocate_person_from_ls(full_name, new_room)
+        else:
+            print('%s is not a room in Amity' % new_room)
 
 if __name__ == '__main__':
     AmityApplication().cmdloop()

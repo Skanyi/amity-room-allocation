@@ -18,6 +18,7 @@ class Amity(object):
         Check that the room does not exist and determine what type of room it is
         '''
         if room_name.upper() in Amity.all_rooms:
+            print('Room already exists')
             return 'Room already exists'
         elif room_type.upper() == 'O':
             Amity.all_rooms.append(room_name.upper())
@@ -28,7 +29,7 @@ class Amity(object):
             Amity.ls_rooms[room_name.upper()]
             current_room = LivingSpace()
         else:
-            return '%s is an invalid room type' % room_type
+            print('%s is an invalid room type' % room_type)
 
     @staticmethod
     def add_person(person_id, firstname, lastname, position, wants_accomodation = 'N'):
@@ -37,7 +38,7 @@ class Amity(object):
         '''
         full_name = firstname + " " + lastname
         if person_id in Amity.all_people.keys():
-            return 'Person with %d id already exist.' % person_id
+            print ('Person with %s id already exist.' % person_id)
 
         elif position.upper() == 'F' and wants_accomodation == 'N':
             Amity.all_people[person_id] = full_name
@@ -131,12 +132,33 @@ class Amity(object):
             return 'There are no living space available'
 
     @staticmethod
-    def reallocate_person(person_id, new_room_name):
+    def reallocate_person_from_office(full_name, new_room_name):
         '''
         use the person full name to remove the person from one office
         to another
         '''
-        pass
+        for room, name in Amity.office_rooms.items():
+            if full_name in name:
+                Amity.office_rooms[room].remove(full_name)
+                Amity.office_rooms[new_room_name].append(full_name)
+                break
+            else:
+                print('No person with that name')
+
+    @staticmethod
+    def reallocate_person_from_ls(full_name, new_room_name):
+        '''
+        use the person full name to remove the person from one livingspace
+        to another
+        '''
+        for room, name in Amity.ls_rooms.items():
+            if full_name in name:
+                Amity.ls_rooms[room].remove(full_name)
+                Amity.ls_rooms[new_room_name].append(full_name)
+                break
+            else:
+                print('No person with that name')
+
 
     @staticmethod
     def print_room(room_name):

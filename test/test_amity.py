@@ -49,10 +49,9 @@ class TestAmity(TestCase):
         Amity.create_room('PHP', 'l')
         self.assertIn('PHP', Amity.all_rooms)
         Amity.add_person(1, 'steve', 'kanyi', 'F')
-        Amity.ls_rooms = {'PHP':[]}
-        self.assertNotIn(1, Amity.ls_rooms['PHP'])
-        Amity.reallocate_person(1, 'PHP')
-        self.assertIn(1, Amity.ls_rooms['PHP'])
+        self.assertNotIn('steve kanyi', Amity.ls_rooms['PHP'])
+        Amity.reallocate_person_from_ls('steve kanyi', 'PHP')
+        self.assertIn('steve kanyi', Amity.ls_rooms['PHP'])
 
     @mock.patch('app.amity.open')
     def test_load_people_calls_open_function(self, mock_open):
