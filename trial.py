@@ -20,5 +20,15 @@ def rellocate(full_name, new_room):
         else:
             print('No person with that name')
 
-rellocate('kanyi', 'r2')
+def print_allocations(filename):
+    if rn in d:
+        print(d[rn])
+    else:
+        print('room not found')
 print(d)
+
+filename = ""
+if filename:
+    print('yes')
+else:
+    print('no')

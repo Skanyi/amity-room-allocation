@@ -2,7 +2,7 @@
 Usage:
     add_person <person_id> <first_name> <last_name> <F|S> [--wants_accomodation=N]
     create_room <room_name> <room_type>
-    reallocate_person <person_id> <new_room_name>
+    reallocate_person <full_name> <new_room_name>
     load_people <filename>
     print_allocations [--o=filename]
     print_unallocated [--o=filename]
@@ -102,6 +102,26 @@ class AmityApplication(cmd.Cmd):
             Amity.reallocate_person_from_ls(full_name, new_room)
         else:
             print('%s is not a room in Amity' % new_room)
+
+    @docopt_cmd
+    def do_print_room(self, arg):
+        ''' Usage: print_room <room_name>'''
+        r_name = arg["<room_name>"]
+        if r_name.upper() in Amity.all_rooms:
+            Amity.print_room(r_name)
+        else:
+            print('There is no room called %s in Amity' % r_name)
+
+    @docopt_cmd
+    def do_print_allocations(self, arg):
+        '''Usage: print_allocations [--o=filename] '''
+        filename = arg["--o"]
+
+        if filename:
+            Amity.print_allocations(filename)
+        else:
+            Amity.print_allocations()
+        
 
 if __name__ == '__main__':
     AmityApplication().cmdloop()
