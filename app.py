@@ -54,9 +54,16 @@ def docopt_cmd(func):
     fn.__dict__.update(func.__dict__)
     return fn
 
+def introduction():
+    #print (border)
+    print ("WELCOME TO AMITY SPACE ALLOCATION!".center(70))
+    #print (spacer)
+    #print (spacer)
+    print(__doc__)
+
 class AmityApplication(cmd.Cmd):
     cprint(figlet_format('AMITY', font='banner3-D'), 'cyan', attrs=['bold'])
-    
+
     prompt = "Amity -->"
 
     @docopt_cmd
@@ -64,8 +71,7 @@ class AmityApplication(cmd.Cmd):
         '''Usage: create_room <room_name> <room_type>'''
         r_name = arg["<room_name>"]
         r_type = arg["<room_type>"]
-        print(r_name, r_type)
-        Amity.create_room(r_name.upper(), ''.join(r_type))
+        Amity.create_room(r_name.upper(), ''.join(r_type.upper()))
 
     @docopt_cmd
     def do_add_person(self, arg):
@@ -126,6 +132,33 @@ class AmityApplication(cmd.Cmd):
         else:
             Amity.print_allocations()
 
+    @docopt_cmd
+    def do_print_unallocated(self, arg):
+        '''Usage: print_unallocated [--o=filename] '''
+        filename = arg["--o"]
+
+        if filename:
+            Amity.print_unallocated(filename)
+        else:
+            Amity.print_unallocated()
+
+    @docopt_cmd
+    def do_save_state(self, arg):
+        '''Usage: save_state [--db=sqlite_database]'''
+        pass
+
+    @docopt_cmd
+    def do_load_state(self, arg):
+        '''Usage: load_state <sqlite_database>'''
+        pass
+
+    @docopt_cmd
+    def do_quit(self, arg):
+        '''Usage: quit '''
+        print("GOODBYE!!!")
+        exit()
+
 
 if __name__ == '__main__':
+    introduction()
     AmityApplication().cmdloop()

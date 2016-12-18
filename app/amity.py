@@ -17,17 +17,20 @@ class Amity(object):
         '''
         Check that the room does not exist and determine what type of room it is
         '''
-        if room_name.upper() in Amity.all_rooms:
+        if room_name in Amity.all_rooms:
             print('Room already exists')
             return 'Room already exists'
-        elif room_type.upper() == 'O':
+        elif room_type == 'O':
             Amity.all_rooms.append(room_name.upper())
             Amity.office_rooms[room_name.upper()]
             current_room = Office()
-        elif room_type.upper() == 'L':
+            print('%s created succesfully' % room_name)
+
+        elif room_type == 'L':
             Amity.all_rooms.append(room_name.upper())
             Amity.ls_rooms[room_name.upper()]
             current_room = LivingSpace()
+            print('%s created succesfully' % room_name)
         else:
             print('%s is an invalid room type' % room_type)
 
@@ -110,7 +113,8 @@ class Amity(object):
         if len(Amity.office_rooms) > 0:
             random_room_name = random.choice(list(Amity.office_rooms))
             if len(Amity.office_rooms[random_room_name]) >= 6:
-                return 'Selected %s is full' % random_room_name
+                print('Selected %s is full' % random_room_name)
+                return
             else:
                 return random_room_name
         else:
@@ -125,7 +129,8 @@ class Amity(object):
 
             random_room_name = random.choice(list(Amity.ls_rooms))
             if len(Amity.ls_rooms[random_room_name]) >= 4:
-                return 'Selected %s is full' % random_room_name
+                print('Selected %s is full' % random_room_name)
+                return
             else:
                 return random_room_name
         else:
@@ -138,7 +143,7 @@ class Amity(object):
         to another
         '''
         for room, name in Amity.office_rooms.items():
-            if full_name in names:
+            if full_name in name:
                 Amity.office_rooms[room].remove(full_name)
                 Amity.office_rooms[new_room_name].append(full_name)
                 print('%s has been reallocated to %s ' % (full_name, new_room_name))
@@ -188,38 +193,46 @@ class Amity(object):
             with open(filename, 'w') as allocation:
                 print("\nWriting to the file .., \n")
                 allocation.write('People in offices \n')
-                for room, name, in Amity.office_rooms.items():
+                for room, name in Amity.office_rooms.items():
                     allocation.write(room + '\n')
                     allocation.write('-' * 50 + '\n')
                     allocation.write(', '.join(name) + '\n')
                 allocation.write('=' * 75 + '\n')
+
                 allocation.write('People in living space \n')
-                for room, name, in Amity.ls_rooms.items():
+                for room, name in Amity.ls_rooms.items():
                     allocation.write(room + '\n')
                     allocation.write('-' * 50 + '\n')
                     allocation.write(', '.join(name) + '\n')
         else:
             print('People in office')
-            for room, name, in Amity.office_rooms.items():
+            for room, name in Amity.office_rooms.items():
                 print(room)
                 print('-' * 50)
-            print(', '.join(name))
+                print(', '.join(name))
+                print('=' * 50)
 
             print('People in Living space rooms')
-            for room, name, in Amity.ls_rooms.items():
+            for room, name in Amity.ls_rooms.items():
                 print(room)
                 print('-' * 50)
-            print(', '.join(name))
+                print(', '.join(name))
+                print('=' * 50)
 
     @staticmethod
-    def print_unallocated():
+    def print_unallocated(filename=''):
         '''
         prints a list of people that have not been allocated to a room yet
         '''
-        print('People not in an room')
-        for name in Amity.unallocated_person:
-            print(name)
-
+        if filename:
+            with open(filename, 'w') as unallocated:
+                print("\nWriting to the file .., \n")
+                unallocated.write('People who are not allocated a living space \n')
+                unallocated.write('-' * 50 + '\n')
+                unallocated.write(', '.join(Amity.unallocated_person))
+        else:
+            print('People not in an room')
+            print(', '.join(Amity.unallocated_person))
 
     def load_state(self):
         '''
@@ -234,12 +247,15 @@ class Amity(object):
         pass
 
 
-Amity.create_room('PHP', 'l')
-Amity.create_room('Narnia', 'o')
-Amity.add_person(1, 'steve', 'kanyi', 'f')
-Amity.add_person(2, 'Joseph', 'Njogu', 'f', 'Y')
-print(Amity.office_rooms)
-print(Amity.ls_rooms)
-Amity.print_allocations()
-Amity.print_unallocated()
-Amity.print_room('PHP')
+Amity.create_room('PHP', 'L')
+Amity.create_room('Narnia', 'O')
+Amity.create_room('GO', 'L')
+Amity.create_room('Carmel', 'O')
+Amity.create_room('JAVA', 'L')
+Amity.create_room('Hogwarts', 'O')
+Amity.add_person(1, 'steve', 'kanyi', 'F')
+Amity.add_person(2, 'Joseph', 'Njogu', 'F', 'Y')
+Amity.add_person(3, 'douglas', 'mbugua', 'S')
+Amity.add_person(4, 'Joshua', 'Mwaniki', 'S', 'Y')
+Amity.add_person(5, 'Angie', 'Mugo', 'F')
+Amity.add_person(6, 'Anthony', 'Yayo', 'F', 'Y')
