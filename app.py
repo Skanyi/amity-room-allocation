@@ -112,9 +112,9 @@ class AmityApplication(cmd.Cmd):
         new_room = arg["<new_room_name>"]
 
         if new_room.upper() in Amity.office_rooms:
-            Amity.reallocate_person_from_office(full_name.upper(), new_room)
+            Amity.reallocate_person_from_office(full_name.upper(), new_room.upper())
         elif new_room.upper() in Amity.ls_rooms:
-            Amity.reallocate_person_from_ls(full_name.upper(), new_room)
+            Amity.reallocate_person_from_ls(full_name.upper(), new_room.upper())
         else:
             print('%s is not a room in Amity' % new_room)
 
@@ -154,7 +154,7 @@ class AmityApplication(cmd.Cmd):
         if database_name:
             Amity.save_state(database_name)
         else:
-            Amity.save_state('default_db') 
+            Amity.save_state('default_db')
 
     @docopt_cmd
     def do_load_state(self, arg):

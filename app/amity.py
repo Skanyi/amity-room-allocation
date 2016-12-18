@@ -158,7 +158,7 @@ class Amity(object):
         use the person full name to remove the person from one livingspace
         to another
         '''
-        for room, name in Amity.ls_rooms.items():
+        for room, name in list(Amity.ls_rooms.items()):
             if full_name in name:
                 Amity.ls_rooms[room].remove(full_name)
                 Amity.ls_rooms[new_room_name].append(full_name)
@@ -278,7 +278,7 @@ Amity.create_room('GO', 'L')
 Amity.create_room('Carmel', 'O')
 Amity.create_room('JAVA', 'L')
 Amity.create_room('Hogwarts', 'O')
-Amity.add_person(8, 'steve', 'kanyi', 'F')
+Amity.add_person(8, 'steve', 'WAWERU', 'F')
 Amity.add_person(15, 'Joseph', 'Njogu', 'F', 'Y')
 Amity.add_person(3, 'douglas', 'mbugua', 'S')
 Amity.add_person(4, 'Joshua', 'Mwaniki', 'S', 'Y')
