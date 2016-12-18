@@ -1,6 +1,9 @@
 from .person import *
 from .room import *
 import random
+from db.migration import (Base, Person, Room, DatabaseCreator, UnAllocated,
+                          OfficeAllocations, LivingSpaceAllocations)
+
 
 class Amity(object):
     office_rooms = defaultdict(list)
@@ -18,7 +21,6 @@ class Amity(object):
         Check that the room does not exist and determine what type of room it is
         '''
         if room_name in Amity.all_rooms:
-            print('Room already exists')
             return 'Room already exists'
         elif room_type == 'O':
             Amity.all_rooms.append(room_name.upper())
@@ -234,17 +236,40 @@ class Amity(object):
             print('People not in an room')
             print(', '.join(Amity.unallocated_person))
 
-    def load_state(self):
+    @staticmethod
+    def load_state():
         '''
         loads the data from database to the app
         '''
         pass
 
-    def save_state(self):
+    @staticmethod
+    def save_state(db_name=None):
         '''
         Saves the data in the app to the database
         '''
-        pass
+        if db_name:
+            db = DatabaseCreator(db_name)
+        else:
+            db = DatabaseCreator('default_db')
+
+        Base.metadata.bind = db.engine
+        db_session = db.session()
+
+        for person in Amity.all_people:
+            person_to_save = Person(
+                name = person.full_name,
+                position = person.position
+            )
+            db_session.merge(person_to_save)
+
+        for room in Amity.all_rooms:
+            room_to_save = Room(
+                name = room.name,
+                room_type = room.room_type,
+                max_occupants = room.max_occupants
+            )
+            db_session.merge(person_to_save)
 
 
 Amity.create_room('PHP', 'L')
@@ -253,8 +278,8 @@ Amity.create_room('GO', 'L')
 Amity.create_room('Carmel', 'O')
 Amity.create_room('JAVA', 'L')
 Amity.create_room('Hogwarts', 'O')
-Amity.add_person(1, 'steve', 'kanyi', 'F')
-Amity.add_person(2, 'Joseph', 'Njogu', 'F', 'Y')
+Amity.add_person(8, 'steve', 'kanyi', 'F')
+Amity.add_person(15, 'Joseph', 'Njogu', 'F', 'Y')
 Amity.add_person(3, 'douglas', 'mbugua', 'S')
 Amity.add_person(4, 'Joshua', 'Mwaniki', 'S', 'Y')
 Amity.add_person(5, 'Angie', 'Mugo', 'F')

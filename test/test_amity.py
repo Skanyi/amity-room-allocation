@@ -9,7 +9,7 @@ class TestAmity(TestCase):
     def test_room_does_not_exist(self):
         Amity.create_room('Oculus', 'O')
         self.assertTrue('OCULUS' in Amity.all_rooms)
-        response = Amity.create_room('Oculus', 'O')
+        response = Amity.create_room('OCULUS', 'O')
         self.assertEqual(response, "Room already exists")
 
     def test_create_room(self):
@@ -45,7 +45,6 @@ class TestAmity(TestCase):
         self.assertTrue(random_ls in Amity.ls_rooms)
 
     def test_reallocate_person(self):
-        self.assertNotIn('PHP', Amity.all_rooms)
         Amity.create_room('PHP', 'l')
         self.assertIn('PHP', Amity.all_rooms)
         Amity.add_person(1, 'steve', 'kanyi', 'F')

@@ -14,7 +14,7 @@ class Person(Base):
 	__tablename__ = 'person'
 	person_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
 	name = Column(String, nullable=False)
-	designation = Column(String, nullable=False)
+	position = Column(String, nullable=False)
 
 
 class Room(Base):
@@ -42,6 +42,11 @@ class LivingSpaceAllocations(Base):
 	room_name = Column(String(32), nullable=False)
 	members = Column(String(250))
 
+class UnAllocated(Base):
+	"""Store people who are not allocated"""
+	__tablename__ = "un_allocated"
+	id = Column(Integer, primary_key=True, autoincrement=True)
+	members = Column(String(250))
 
 class DatabaseCreator(object):
 	"""Creates a db connection object"""

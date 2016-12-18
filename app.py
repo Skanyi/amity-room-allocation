@@ -12,6 +12,7 @@ Usage:
     quit
 Options:
     -h, --help  Show this screen and exit
+    -i --interactive  Interactive Mode
     --wants_accomodation=<N> [defult: N]
 '''
 
@@ -19,7 +20,7 @@ from app.amity import Amity
 import sys
 import cmd
 import os
-from termcolor import cprint
+from termcolor import cprint, colored
 from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
 
@@ -54,12 +55,12 @@ def docopt_cmd(func):
     fn.__dict__.update(func.__dict__)
     return fn
 
+border = colored("*" * 20, 'cyan').center(80)
 def introduction():
-    #print (border)
+    print (border)
     print ("WELCOME TO AMITY SPACE ALLOCATION!".center(70))
-    #print (spacer)
-    #print (spacer)
     print(__doc__)
+    print (border)
 
 class AmityApplication(cmd.Cmd):
     cprint(figlet_format('AMITY', font='banner3-D'), 'cyan', attrs=['bold'])
@@ -71,7 +72,11 @@ class AmityApplication(cmd.Cmd):
         '''Usage: create_room <room_name> <room_type>'''
         r_name = arg["<room_name>"]
         r_type = arg["<room_type>"]
-        Amity.create_room(r_name.upper(), ''.join(r_type.upper()))
+        if r_name.upper in Amity.all_rooms:
+            cprint('Room already exists')
+            return
+        else:
+            Amity.create_room(r_name.upper(), ''.join(r_type.upper()))
 
     @docopt_cmd
     def do_add_person(self, arg):
@@ -145,7 +150,11 @@ class AmityApplication(cmd.Cmd):
     @docopt_cmd
     def do_save_state(self, arg):
         '''Usage: save_state [--db=sqlite_database]'''
-        pass
+        database_name = arg["--db"]
+        if database_name:
+            Amity.save_state(database_name)
+        else:
+            Amity.save_state('default_db') 
 
     @docopt_cmd
     def do_load_state(self, arg):
