@@ -19,6 +19,8 @@ from app.amity import Amity
 import sys
 import cmd
 import os
+from termcolor import cprint
+from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
 
 
@@ -53,6 +55,8 @@ def docopt_cmd(func):
     return fn
 
 class AmityApplication(cmd.Cmd):
+    cprint(figlet_format('AMITY', font='banner3-D'), 'cyan', attrs=['bold'])
+    
     prompt = "Amity -->"
 
     @docopt_cmd
@@ -97,9 +101,9 @@ class AmityApplication(cmd.Cmd):
         new_room = arg["<new_room_name>"]
 
         if new_room.upper() in Amity.office_rooms:
-            Amity.reallocate_person_from_office(f_name, new_room)
+            Amity.reallocate_person_from_office(full_name.upper(), new_room)
         elif new_room.upper() in Amity.ls_rooms:
-            Amity.reallocate_person_from_ls(full_name, new_room)
+            Amity.reallocate_person_from_ls(full_name.upper(), new_room)
         else:
             print('%s is not a room in Amity' % new_room)
 
@@ -121,7 +125,7 @@ class AmityApplication(cmd.Cmd):
             Amity.print_allocations(filename)
         else:
             Amity.print_allocations()
-        
+
 
 if __name__ == '__main__':
     AmityApplication().cmdloop()
