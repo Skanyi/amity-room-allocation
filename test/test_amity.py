@@ -54,13 +54,26 @@ class TestAmity(TestCase):
         current_fellow_count = len(Amity.fellows)
         self.assertEqual(previous_fellow_count + 1, current_fellow_count, 'Person fellow has not been added')
 
-    def test_generate_random_office_from_office_rooms(self):
+    def test_does_not_generate_random_office_from_office_rooms_thats_full(self):
         random_office = Amity.generate_random_office()
-        self.assertTrue(random_office in Amity.office_rooms)
+        self.assertEqual(random_office, 'There are no office rooms available')
 
-    def test_generate_random_living_space_from_ls_rooms(self):
+    def test_does_not_generate_random_living_space_from_ls_rooms_thats_full(self):
         random_ls = Amity.generate_random_living_space()
         self.assertEqual(random_ls, 'There are no living spaces available')
+
+    def test_return_random_office_room(self):
+        Amity.create_room('Carmel', 'O')
+        Amity.create_room('Narnia', 'O')
+        random_office = Amity.generate_random_office()
+        self.assertIn(random_office, Amity.office_rooms)
+
+
+    def test_return_random_ls_room(self):
+        Amity.create_room('PHP', 'L')
+        Amity.create_room('Go', 'L')
+        random_ls = Amity.generate_random_living_space()
+        self.assertIn(random_ls, Amity.ls_rooms)
 
     def test_reallocate_person(self):
         Amity.create_room('PHP', 'l')
@@ -70,6 +83,18 @@ class TestAmity(TestCase):
         Amity.reallocate_person_to_ls('steve kanyi', 'GO')
         self.assertIn('STEVE KANYI', Amity.ls_rooms['GO'])
         self.assertNotIn('STEVE KANYI', Amity.ls_rooms['PHP'])
+
+    def test_does_not_reallocate_to_a_full_ls_room(self):
+        Amity.create_room('PHP', 'L')
+        Amity.add_person('steve', 'kanyi', 'F', 'Y')
+        Amity.add_person('Angie', 'Mugo', 'F', 'Y')
+        Amity.add_person('Percila', 'Njira', 'F', 'Y')
+        Amity.add_person('David', 'Chironde', 'F', 'Y')
+        self.assertEqual(len(Amity.ls_rooms['PHP']), 4)
+        Amity.create_room('GO', 'L')
+        Amity.add_person('Clement', 'Mwendwa', 'F', 'Y')
+        response = Amity.reallocate_person_to_ls('Clement Mwendwa', 'PHP')
+        self.assertEqual(response, 'PHP is already full')
 
 
     @mock.patch('app.amity.open')
