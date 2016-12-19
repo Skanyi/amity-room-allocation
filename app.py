@@ -101,8 +101,6 @@ class AmityApplication(cmd.Cmd):
         else:
             print("File not found")
 
-        Amity.load_people(arg["<filename>"])
-
     @docopt_cmd
     def do_reallocate_person(self, arg):
         ''' Usage: reallocate_person <firstname> <lastname> <new_room_name>'''
