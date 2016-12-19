@@ -9,6 +9,7 @@ class Person(object):
         self.firstname = firstname
         self.lastname = lastname
         self.position = position
+        self.full_name = self.firstname + " " + self.lastname
 
 
 class Fellow(Person):

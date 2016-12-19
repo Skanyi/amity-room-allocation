@@ -12,9 +12,15 @@ import random
 d = {'r1': ['steve', 'chela'], 'r2': ['doug'], 'r3': ['angi'], 'r4': ['mbug'], 'r5': ['kanyi']}
 print(d)
 
+if 'r2' in d:
+    print('chela found')
+else:
+    print('Chela not found')
+
 def save_state(database = None):
     if not database:
-        
+        pass
+
 
 
 def rellocate(full_name, new_room):

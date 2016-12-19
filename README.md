@@ -6,7 +6,7 @@
 The Amity room allocation is a system that allocates rooms to the Staff and fellows working at Andela. Developed in #python.
 
 1. `create_room <room_name>...` - Creates a room in Amity. This command can create as many rooms as possible by specifying multiple room names
-2. `add_person <person_id> <firstname> <lastname> <F|S> [--wants_accomodation=N]` - Add a person to the system and allocates the person to a random room
+2. `add_person <firstname> <lastname> <F|S> [--wants_accomodation=N]` - Add a person to the system and allocates the person to a random room
 3. `reallocate_person <person_identifier> <new_room_name>` - Reallocate the person with person with `person_identifier` to `new_room_name`
 4. `load_people` - Adds people to rooms from a text file
 5. `print_allocations [-o=filename]` - Prints a list of allocations  onto the screen. Specifying the optional -o option here outputs the information to the text file provided

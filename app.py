@@ -80,17 +80,17 @@ class AmityApplication(cmd.Cmd):
 
     @docopt_cmd
     def do_add_person(self, arg):
-        '''Usage: add_person <person_id> <firstname> <lastname> <position> [--wants_accomodation=N] '''
-        p_id = arg["<person_id>"]
+        '''Usage: add_person <firstname> <lastname> <position> [--wants_accomodation=N] '''
+
         f_name = arg["<firstname>"]
         l_name = arg["<lastname>"]
         pos = arg["<position>"]
         wants_accomodation = arg["--wants_accomodation"]
 
         if wants_accomodation:
-            Amity.add_person(p_id, f_name, l_name, pos, wants_accomodation)
+            Amity.add_person(f_name, l_name, pos, wants_accomodation)
         else:
-            Amity.add_person(p_id, f_name, l_name, pos)
+            Amity.add_person(f_name, l_name, pos)
 
     @docopt_cmd
     def do_load_people(self, arg):
