@@ -39,6 +39,7 @@ class TestAmity(TestCase):
         self.assertEqual(previous_room_count + 1, new_room_count)
 
     def test_add_person_staff(self):
+        Amity.create_room('NARNIA', 'O')
         previous_staff_count = len(Amity.staffs)
         self.assertFalse('PERCILA NJIRA' in Amity.all_people)
         Amity.add_person('PERCILA', 'NJIRA', 'S')
@@ -47,20 +48,21 @@ class TestAmity(TestCase):
         self.assertEqual(previous_staff_count + 1, current_staff_count,  'Person staff has not been added')
 
     def test_add_person_fellow(self):
+        Amity.create_room('NARNIA', 'O')
         previous_fellow_count = len(Amity.fellows)
         self.assertFalse('STEVE KANYI' in Amity.all_people)
-        Amity.add_person('steve', 'kanyi', 'F', 'Y')
+        Amity.add_person('steve', 'kanyi', 'F')
         self.assertTrue('STEVE KANYI' in Amity.all_people)
         current_fellow_count = len(Amity.fellows)
         self.assertEqual(previous_fellow_count + 1, current_fellow_count, 'Person fellow has not been added')
 
     def test_does_not_generate_random_office_from_office_rooms_thats_full(self):
-        random_office = Amity.generate_random_office()
-        self.assertEqual(random_office, 'There are no office rooms available')
+        with self.assertRaises(Exception):
+            Amity.generate_random_office()
 
     def test_does_not_generate_random_living_space_from_ls_rooms_thats_full(self):
-        random_ls = Amity.generate_random_living_space()
-        self.assertEqual(random_ls, 'There are no living spaces available')
+        with self.assertRaises(Exception):
+            Amity.generate_random_living_space()
 
     def test_return_random_office_room(self):
         Amity.create_room('Carmel', 'O')
@@ -77,6 +79,7 @@ class TestAmity(TestCase):
 
     def test_reallocate_person(self):
         Amity.create_room('PHP', 'l')
+        Amity.create_room('NARNIA', 'O')
         Amity.add_person('steve', 'kanyi', 'F', 'Y')
         self.assertIn('STEVE KANYI', Amity.ls_rooms['PHP'])
         Amity.create_room('GO', 'l')
@@ -86,15 +89,48 @@ class TestAmity(TestCase):
 
     def test_does_not_reallocate_to_a_full_ls_room(self):
         Amity.create_room('PHP', 'L')
+        Amity.create_room('NARNIA', 'O')
+        previous_count = len(Amity.ls_rooms['PHP'])
         Amity.add_person('steve', 'kanyi', 'F', 'Y')
         Amity.add_person('Angie', 'Mugo', 'F', 'Y')
         Amity.add_person('Percila', 'Njira', 'F', 'Y')
         Amity.add_person('David', 'Chironde', 'F', 'Y')
-        self.assertEqual(len(Amity.ls_rooms['PHP']), 4)
+        current_count = len(Amity.ls_rooms['PHP'])
+        self.assertEqual(previous_count + 4, current_count)
         Amity.create_room('GO', 'L')
         Amity.add_person('Clement', 'Mwendwa', 'F', 'Y')
         response = Amity.reallocate_person_to_ls('Clement Mwendwa', 'PHP')
         self.assertEqual(response, 'PHP is already full')
+
+    def test_does_reallocate_to_same_ls_room(self):
+        Amity.create_room('PHP', 'L')
+        Amity.create_room('NARNIA', 'O')
+        Amity.add_person('Steve', 'Kanyi', 'F', 'Y')
+        response = Amity.reallocate_person_to_ls('Steve Kanyi', 'PHP')
+        self.assertEqual(response, 'STEVE KANYI is already allocated to PHP')
+
+    def test_does_not_reallocate_to_a_full_office_room(self):
+        Amity.create_room('Narnia', 'O')
+        previous_count = len(Amity.office_rooms['NARNIA'])
+        Amity.add_person('steve', 'kanyi', 'F')
+        Amity.add_person('Angie', 'Mugo', 'F')
+        Amity.add_person('Percila', 'Njira', 'S')
+        Amity.add_person('David', 'Chironde', 'F')
+        Amity.add_person('Paul', 'Kahohi', 'S')
+        Amity.add_person('Josh', 'Mwaniki', 'S')
+        current_count = len(Amity.office_rooms['NARNIA'])
+        self.assertEqual(previous_count + 6, current_count)
+        Amity.create_room('Carmel', 'O')
+        Amity.add_person('Clement', 'Mwendwa', 'F')
+        response = Amity.reallocate_person_to_office('Clement Mwendwa', 'NARNIA')
+        self.assertEqual(response, 'NARNIA is already full')
+
+    def test_does_reallocate_to_same_office_room(self):
+        Amity.create_room('NARNIA', 'O')
+        Amity.add_person('Steve', 'Kanyi', 'F')
+        response = Amity.reallocate_person_to_office('Steve Kanyi', 'NARNIA')
+        self.assertEqual(response, 'STEVE KANYI is already allocated to NARNIA')
+
 
 
     @mock.patch('app.amity.open')

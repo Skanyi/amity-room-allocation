@@ -114,26 +114,25 @@ class Amity(object):
         Generates a random office that is not full
         '''
         rooms_not_full = [room for room in Amity.office_rooms if len(Amity.office_rooms[room]) < 6]
-        if len(Amity.office_rooms) > 0:
+        if len(rooms_not_full) > 0:
             random_office = random.choice(rooms_not_full)
             return random_office
         else:
-            return 'There are no office rooms available'
+            raise Exception('There are no office rooms available')
 
     @staticmethod
     def generate_random_living_space():
         '''
-        Generate a random living space that is not fulloccupied
+        Generate a random living space that is not full_occupied
         '''
-        try:
-            rooms_not_full = [room for room in Amity.ls_rooms if len(Amity.ls_rooms[room]) < 4]
-            if len(Amity.ls_rooms) > 0:
-                random_office = random.choice(rooms_not_full)
-                return random_office
-            else:
-                return 'There are no living spaces available'
-        except:
-            raise IndexError('All the rooms are full')
+
+        rooms_not_full = [room for room in Amity.ls_rooms if len(Amity.ls_rooms[room]) < 4]
+        if len(rooms_not_full) > 0:
+            random_ls = random.choice(rooms_not_full)
+            return random_ls
+        else:
+            raise Exception('There are no living space rooms available')
+
 
     @staticmethod
     def reallocate_person_to_office(full_name, new_room_name):
@@ -148,10 +147,13 @@ class Amity(object):
         if len(Amity.office_rooms[new_room_name]) == 6:
             return '%s is already full' % new_room_name
 
-        for room, name in list(Amity.ls_rooms.items()):
-            if full_name in name:
-                Amity.ls_rooms[room].remove(full_name)
-                Amity.ls_rooms[new_room_name].append(full_name)
+        if full_name in Amity.office_rooms[new_room_name]:
+            return '%s is already allocated to %s' % (full_name, new_room_name)
+
+        for room, members in list(Amity.office_rooms.items()):
+            if full_name in members:
+                Amity.office_rooms[room].remove(full_name)
+                Amity.office_rooms[new_room_name].append(full_name)
                 print('%s has been reallocated to %s ' % (full_name, new_room_name))
 
     @staticmethod
@@ -167,8 +169,11 @@ class Amity(object):
         if len(Amity.ls_rooms[new_room_name]) == 4:
             return '%s is already full' % new_room_name
 
-        for room, name in list(Amity.ls_rooms.items()):
-            if full_name in name:
+        if full_name in Amity.ls_rooms[new_room_name]:
+            return '%s is already allocated to %s' % (full_name, new_room_name)
+
+        for room, members in list(Amity.ls_rooms.items()):
+            if full_name in members:
                 Amity.ls_rooms[room].remove(full_name)
                 Amity.ls_rooms[new_room_name].append(full_name)
                 print('%s has been reallocated to %s ' % (full_name, new_room_name))
@@ -202,6 +207,7 @@ class Amity(object):
                 print("\nWriting to the file .., \n")
                 allocation.write('People in offices \n')
                 for room, name in Amity.office_rooms.items():
+                    print(room, name)
                     allocation.write(room + '\n')
                     allocation.write('-' * 50 + '\n')
                     allocation.write(', '.join(name) + '\n')
