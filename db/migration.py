@@ -45,7 +45,7 @@ class UnAllocated(Base):
 	"""Store people who are not allocated"""
 	__tablename__ = "un_allocated"
 	id = Column(Integer, primary_key=True)
-	members = Column(String(250))
+	name = Column(String(250))
 
 class DatabaseCreator(object):
 	"""Creates a db connection object"""

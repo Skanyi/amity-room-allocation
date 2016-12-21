@@ -156,8 +156,9 @@ class AmityApplication(cmd.Cmd):
 
     @docopt_cmd
     def do_load_state(self, arg):
-        '''Usage: load_state <sqlite_database>'''
-        pass
+        '''Usage: load_state [--db=sqlite_database]'''
+        database_name = arg["--db"]
+        Amity.load_state(database_name)
 
     @docopt_cmd
     def do_quit(self, arg):

@@ -115,9 +115,14 @@ class Amity(object):
         '''
         Generates a random office that is not full
         '''
-        rooms_not_full = [room for room in Amity.office_rooms if len(Amity.office_rooms[room]) < 6]
-        if len(rooms_not_full) > 0:
-            random_office = random.choice(rooms_not_full)
+        available_offices = []
+        for room in Amity.office_rooms:
+            if len(Amity.office_rooms[room]) < 6:
+                available_offices.append(room)
+
+        if len(available_offices) > 0:
+            random_office = random.choice(available_offices)
+            print(random_office)
             return random_office
         else:
             raise Exception('There are no office rooms available')
@@ -128,9 +133,13 @@ class Amity(object):
         Generate a random living space that is not full_occupied
         '''
 
-        rooms_not_full = [room for room in Amity.ls_rooms if len(Amity.ls_rooms[room]) < 4]
-        if len(rooms_not_full) > 0:
-            random_ls = random.choice(rooms_not_full)
+        available_ls = []
+        for room in Amity.ls_rooms:
+            if len(Amity.ls_rooms[room]) < 4:
+                available_ls.append(room)
+
+        if len(available_ls) > 0:
+            random_ls = random.choice(available_ls)
             return random_ls
         else:
             raise Exception('There are no living space rooms available')
@@ -251,11 +260,74 @@ class Amity(object):
             print(', '.join(Amity.unallocated_person))
 
     @staticmethod
-    def load_state():
+    def load_state(db_name):
         '''
         loads the data from database to the app
         '''
-        pass
+        if db_name:
+            db = DatabaseCreator(db_name)
+        else:
+            db = DatabaseCreator('default_db')
+
+        Base.metadata.bind = db.engine
+
+        db_session = db.session
+
+        #load people from database
+        people_in_db = select([AmityPersons])
+        result = db.session.execute(people_in_db)
+        for person in result.fetchall():
+            name = person.name
+            position = person.position
+            Amity.all_people[name] = position
+
+        db_session.close()
+        #print(Amity.all_people)
+
+        #load rooms from database
+        rooms_in_db = select([AmityRooms])
+        result = db.session.execute(rooms_in_db)
+        for room in result.fetchall():
+            name = room.name
+            room_type = room.room_type
+            Amity.all_rooms[name] = room_type
+
+        db_session.close()
+        #print(Amity.all_rooms)
+
+        #load office allocations from database
+        people_in_offices = select([OfficeAllocations])
+        result = db.session.execute(people_in_offices)
+        for room in result.fetchall():
+            room_name = room.room_name
+            members = room.members
+            Amity.office_rooms[name].append(members)
+
+        db_session.close()
+        #print(Amity.office_rooms)
+
+        #load living space allocations from database
+        people_in_ls = select([LivingSpaceAllocations])
+        result = db.session.execute(people_in_ls)
+        for person in result.fetchall():
+            name = person.room_name
+            member = person.members
+            if member not in Amity.ls_rooms[name]:
+                Amity.ls_rooms[name].append(members)
+
+        db_session.close()
+        #print(Amity.ls_rooms)
+
+        #load unalloccated people from database
+        unallocated_people = select([UnAllocated])
+        result = db.session.execute(unallocated_people)
+        for person in result.fetchall():
+            name = person.name
+            if name not in Amity.unallocated_person:
+                Amity.unallocated_person.append(name)
+
+        db_session.close()
+        #print(Amity.unallocated_person)
 
     @staticmethod
     def save_state(db_name=None):
@@ -271,13 +343,13 @@ class Amity(object):
 
         db_session = db.session
 
-        #save people to db
+        #save people to database
         people_in_db = select([AmityPersons])
         result = db_session.execute(people_in_db)
         people_list = [item.name for item in result]
 
         for full_name, position in Amity.all_people.items():
-            if Amity.all_people[full_name] not in people_list:
+            if full_name not in people_list:
                 new_person = AmityPersons(name = full_name,
                                           position=position)
                 db.session.add(new_person)
@@ -289,8 +361,43 @@ class Amity(object):
         rooms_list = [item.name for item in result]
 
         for room, r_type in Amity.all_rooms.items():
-            if Amity.all_rooms[room] not in rooms_list:
+            if room not in rooms_list:
                 new_room = AmityRooms(name=room,
                                       room_type=r_type)
+                db.session.add(new_room)
+                db.session.commit()
+
+        #saves the people in offices
+        peopl_in_office = select([OfficeAllocations])
+        result = db.session.execute(peopl_in_office)
+        office_people_list = [person.members for person in result]
+        for room, members in Amity.office_rooms.items():
+            for member in members:
+                if member not in office_people_list:
+                    new_room = OfficeAllocations(room_name=room,
+                                                 members=member)
+                    db.session.add(new_room)
+                    db.session.commit()
+
+        #saves the people in livingspace
+        peopl_in_ls = select([LivingSpaceAllocations])
+        result = db.session.execute(peopl_in_ls)
+        ls_people_list = [person.members for person in result]
+        for room, members in Amity.ls_rooms.items():
+            for member in members:
+                if member not in ls_people_list:
+                    new_room = LivingSpaceAllocations(room_name=room,
+                                                 members=member)
+                    db.session.add(new_room)
+                    db.session.commit()
+
+        #saves the fellow who are not allocated a livingspace
+        unallocated_people = select([UnAllocated])
+        result = db.session.execute(unallocated_people)
+        unallocated_people_list = [person.name for person in result]
+        for person in Amity.unallocated_person:
+            if person not in unallocated_people_list:
+                new_room = UnAllocated(name=person)
+
                 db.session.add(new_room)
                 db.session.commit()
