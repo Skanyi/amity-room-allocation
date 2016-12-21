@@ -10,7 +10,7 @@ class TestAmity(TestCase):
     def setUp(self):
         Amity.office_rooms = defaultdict(list)
         Amity.ls_rooms = defaultdict(list)
-        Amity.all_rooms  = []
+        Amity.all_rooms  = {}
         Amity.staffs = []
         Amity.fellows = []
         Amity.all_people = {}
