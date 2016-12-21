@@ -17,9 +17,7 @@ Options:
 '''
 
 from app.amity import Amity
-import sys
-import cmd
-import os
+import sys, cmd, os
 from termcolor import cprint, colored
 from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
@@ -70,34 +68,34 @@ class AmityApplication(cmd.Cmd):
     @docopt_cmd
     def do_create_room(self, arg):
         '''Usage: create_room <room_name> <room_type>'''
-        r_name = arg["<room_name>"]
-        r_type = arg["<room_type>"]
-        if r_name.upper in Amity.all_rooms:
-            cprint('Room already exists')
-            return
-        else:
-            Amity.create_room(r_name.upper(), ''.join(r_type.upper()))
+        room_name = arg["<room_name>"]
+        room_type = arg["<room_type>"]
+
+        Amity.create_room(room_name.upper(), room_type.upper())
 
     @docopt_cmd
     def do_add_person(self, arg):
         '''Usage: add_person <firstname> <lastname> <position> [--wants_accomodation=N] '''
 
-        f_name = arg["<firstname>"]
-        l_name = arg["<lastname>"]
+        first_name = arg["<firstname>"]
+        last_name = arg["<lastname>"]
         pos = arg["<position>"]
         wants_accomodation = arg["--wants_accomodation"]
+        if not wants_accomodation:
+            Amity.add_person(first_name, last_name, pos)
 
-        if wants_accomodation:
-            Amity.add_person(f_name, l_name, pos, wants_accomodation)
         else:
-            Amity.add_person(f_name, l_name, pos)
+            Amity.add_person(first_name, last_name, pos, wants_accomodation)
 
     @docopt_cmd
     def do_load_people(self, arg):
         ''' Usage: load_people <filename>'''
-        file_n = arg["<filename>"]
-        if os.path.exists(file_n):
-            Amity.load_people(file_n)
+        file_name = arg["<filename>"]
+        if os.path.exists(file_name):
+            try:
+                Amity.load_people(file_name)
+            except:
+                print("No more rooms available")
         else:
             print("File not found")
 
@@ -119,31 +117,25 @@ class AmityApplication(cmd.Cmd):
     @docopt_cmd
     def do_print_room(self, arg):
         ''' Usage: print_room <room_name>'''
-        r_name = arg["<room_name>"]
-        if r_name.upper() in Amity.all_rooms:
-            Amity.print_room(r_name)
+        room_name = arg["<room_name>"]
+        if room_name.upper() in Amity.all_rooms:
+            Amity.print_room(room_name)
         else:
-            print('There is no room called %s in Amity' % r_name)
+            print('There is no room called %s in Amity' % room_name)
 
     @docopt_cmd
     def do_print_allocations(self, arg):
         '''Usage: print_allocations [--o=filename] '''
         filename = arg["--o"]
 
-        if filename:
-            Amity.print_allocations(filename)
-        else:
-            Amity.print_allocations()
+        Amity.print_allocations(filename)
 
     @docopt_cmd
     def do_print_unallocated(self, arg):
         '''Usage: print_unallocated [--o=filename] '''
         filename = arg["--o"]
 
-        if filename:
-            Amity.print_unallocated(filename)
-        else:
-            Amity.print_unallocated()
+        Amity.print_unallocated(filename)
 
     @docopt_cmd
     def do_save_state(self, arg):

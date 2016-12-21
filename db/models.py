@@ -21,7 +21,7 @@ class AmityRooms(Base):
 	"""Create the rooms table
 	"""
 	__tablename__ = 'room'
-	room_id = Column(Integer, primary_key=True)
+	room_id = Column(Integer, primary_key=True, nullable=False)
 	name = Column(String(32), nullable=False)
 	room_type = Column(String(32), nullable=False)
 
@@ -49,13 +49,12 @@ class UnAllocated(Base):
 
 class DatabaseCreator(object):
 	"""Creates a db connection object"""
-	def __init__(self, db_name=None):
+	def __init__(self, db_name='default_db'):
 		self.db_name = db_name
 		if self.db_name:
 			self.db_name = db_name + '.sqlite'
 		else:
 			self.db_name = 'default_amity_db.sqlite'
 		self.engine = create_engine('sqlite:///' + self.db_name)
-		self.Session = sessionmaker(bind=self.engine)
-		self.session = self.Session()
+		self.session = sessionmaker(bind=self.engine)()
 		Base.metadata.create_all(self.engine)
