@@ -1,14 +1,16 @@
 from .person import *
 from .room import *
 import random
-from db.migration import (Base, Person, Room, DatabaseCreator, UnAllocated,
+from db.migration import (Base, AmityPersons, AmityRooms, DatabaseCreator, UnAllocated,
                           OfficeAllocations, LivingSpaceAllocations)
+from sqlalchemy.sql import select
+
 
 
 class Amity(object):
     office_rooms = defaultdict(list)
     ls_rooms = defaultdict(list)
-    all_rooms  = []
+    all_rooms  = {}
     staffs = []
     fellows = []
     all_people = {}
@@ -24,13 +26,13 @@ class Amity(object):
             return 'Room already exists'
         elif room_type.upper() == 'O':
             current_room = Office(room_name)
-            Amity.all_rooms.append(current_room.room_name.upper())
+            Amity.all_rooms[current_room.room_name.upper()] = current_room.room_type
             Amity.office_rooms[current_room.room_name.upper()]
             print('%s created succesfully' % room_name)
 
         elif room_type.upper() == 'L':
             current_room = LivingSpace(room_name)
-            Amity.all_rooms.append(current_room.room_name.upper())
+            Amity.all_rooms[current_room.room_name.upper()] = current_room.room_type
             Amity.ls_rooms[current_room.room_name.upper()]
             print('%s created succesfully' % room_name)
         else:
@@ -266,19 +268,29 @@ class Amity(object):
             db = DatabaseCreator('default_db')
 
         Base.metadata.bind = db.engine
-        db_session = db.session()
 
-        for person in Amity.all_people:
-            person_to_save = Person(
-                name = person.full_name,
-                position = person.position
-            )
-            db_session.merge(person_to_save)
+        db_session = db.session
 
-        for room in Amity.all_rooms:
-            room_to_save = Room(
-                name = room.name,
-                room_type = room.room_type,
-                max_occupants = room.max_occupants
-            )
-            db_session.merge(person_to_save)
+        #save people to db
+        people_in_db = select([AmityPersons])
+        result = db_session.execute(people_in_db)
+        people_list = [item.name for item in result]
+
+        for full_name, position in Amity.all_people.items():
+            if Amity.all_people[full_name] not in people_list:
+                new_person = AmityPersons(name = full_name,
+                                          position=position)
+                db.session.add(new_person)
+                db.session.commit()
+
+        # saves the rooms to database
+        rooms_in_db = select([AmityRooms])
+        result = db.session.execute(rooms_in_db)
+        rooms_list = [item.name for item in result]
+
+        for room, r_type in Amity.all_rooms.items():
+            if Amity.all_rooms[room] not in rooms_list:
+                new_room = AmityRooms(name=room,
+                                      room_type=r_type)
+                db.session.add(new_room)
+                db.session.commit()

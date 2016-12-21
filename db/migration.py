@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-class Person(Base):
+class AmityPersons(Base):
 	"""Create people table
 	"""
 	__tablename__ = 'person'
@@ -17,14 +17,13 @@ class Person(Base):
 	position = Column(String, nullable=False)
 
 
-class Room(Base):
+class AmityRooms(Base):
 	"""Create the rooms table
 	"""
 	__tablename__ = 'room'
 	room_id = Column(Integer, primary_key=True)
 	name = Column(String(32), nullable=False)
 	room_type = Column(String(32), nullable=False)
-	max_occupants = Column(Integer, nullable=False)
 
 
 class OfficeAllocations(Base):
@@ -50,14 +49,13 @@ class UnAllocated(Base):
 
 class DatabaseCreator(object):
 	"""Creates a db connection object"""
-
 	def __init__(self, db_name=None):
 		self.db_name = db_name
 		if self.db_name:
 			self.db_name = db_name + '.sqlite'
 		else:
-			self.db_name = 'main.sqlite'
+			self.db_name = 'default_amity_db.sqlite'
 		self.engine = create_engine('sqlite:///' + self.db_name)
-		self.session = sessionmaker()
-		self.session.configure(bind=self.engine)
+		self.Session = sessionmaker(bind=self.engine)
+		self.session = self.Session()
 		Base.metadata.create_all(self.engine)
