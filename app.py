@@ -60,6 +60,11 @@ def introduction():
     print(__doc__)
     print (border)
 
+def save_state_on_interrupt():
+    print("saving state...")
+    Amity.save_state()
+
+
 class AmityApplication(cmd.Cmd):
     cprint(figlet_format('AMITY', font='banner3-D'), 'cyan', attrs=['bold'])
 
@@ -147,4 +152,7 @@ class AmityApplication(cmd.Cmd):
 
 if __name__ == '__main__':
     introduction()
-    AmityApplication().cmdloop()
+    try:
+        AmityApplication().cmdloop()
+    except KeyboardInterrupt:
+        save_state_on_interrupt()
