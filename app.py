@@ -70,7 +70,6 @@ class AmityApplication(cmd.Cmd):
         '''Usage: create_room <room_name> <room_type>'''
         room_name = arg["<room_name>"]
         room_type = arg["<room_type>"]
-
         Amity.create_room(room_name.upper(), room_type.upper())
 
     @docopt_cmd
@@ -81,21 +80,14 @@ class AmityApplication(cmd.Cmd):
         last_name = arg["<lastname>"]
         pos = arg["<position>"]
         wants_accomodation = arg["--wants_accomodation"]
-        if not wants_accomodation:
-            Amity.add_person(first_name, last_name, pos)
-
-        else:
-            Amity.add_person(first_name, last_name, pos, wants_accomodation)
+        Amity.add_person(first_name, last_name, pos.upper(), str(wants_accomodation))
 
     @docopt_cmd
     def do_load_people(self, arg):
         ''' Usage: load_people <filename>'''
         file_name = arg["<filename>"]
         if os.path.exists(file_name):
-            try:
-                Amity.load_people(file_name)
-            except:
-                print("No more rooms available")
+            Amity.load_people(file_name)
         else:
             print("File not found")
 
@@ -118,10 +110,7 @@ class AmityApplication(cmd.Cmd):
     def do_print_room(self, arg):
         ''' Usage: print_room <room_name>'''
         room_name = arg["<room_name>"]
-        if room_name.upper() in Amity.all_rooms:
-            Amity.print_room(room_name)
-        else:
-            print('There is no room called %s in Amity' % room_name)
+        Amity.print_room(room_name)
 
     @docopt_cmd
     def do_print_allocations(self, arg):
@@ -141,10 +130,7 @@ class AmityApplication(cmd.Cmd):
     def do_save_state(self, arg):
         '''Usage: save_state [--db=sqlite_database]'''
         database_name = arg["--db"]
-        if database_name:
-            Amity.save_state(database_name)
-        else:
-            Amity.save_state('default_db')
+        Amity.save_state(database_name)
 
     @docopt_cmd
     def do_load_state(self, arg):

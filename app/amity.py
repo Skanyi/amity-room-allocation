@@ -15,7 +15,6 @@ class Amity(object):
     fellows = []
     all_people = {}
     unallocated_person = {}
-    unallocated_living_space = []
 
 
     @staticmethod
@@ -41,34 +40,47 @@ class Amity(object):
             print('%s is an invalid room type' % room_type)
 
     @staticmethod
-    def add_person(firstname, lastname, position, wants_accomodation = 'N'):
+    def add_person(firstname, lastname, position, wants_accomodation='N'):
         '''
         Add person details to the system
         '''
-
         full_name = firstname + " " + lastname
         person_id = len(list(Amity.all_people)) + 1
 
         if full_name.upper() in Amity.all_people:
             print ('Person with %s id already exist.' % full_name)
 
-        elif position.upper() == 'F' and wants_accomodation.upper() == 'N':
-            new_fellow = Fellow(person_id, firstname, lastname)
-            Amity.all_people[new_fellow.full_name.upper()] = position
-            Amity.fellows.append(new_fellow.full_name.upper())
-            random_office = Amity.generate_random_office()
-            if not random_office:
-                Amity.unallocated_person[new_fellow.full_name.upper()] = position
-                print('Added %s to the unallocated list' % new_fellow.full_name)
-            else:
-                Amity.office_rooms[random_office].append(new_fellow.full_name.upper())
-                print("Added: %s and allocated them to %s: " % (new_fellow.full_name, random_office))
-
         elif position.upper() == 'F' and wants_accomodation.upper() == 'Y':
             new_fellow = Fellow(person_id, firstname, lastname)
             Amity.all_people[new_fellow.full_name.upper()] = position
             Amity.fellows.append(new_fellow.full_name.upper())
             random_office = Amity.generate_random_office()
+            random_ls = Amity.generate_random_living_space()
+            if not random_office and not random_ls:
+                Amity.unallocated_person[new_fellow.full_name.upper()] = position
+                print('Added %s to the unallocated list' % new_fellow.full_name)
+            elif not random_office and random_ls:
+                Amity.unallocated_person[new_fellow.full_name.upper()] = position
+                print('Added %s to the unallocated list' % new_fellow.full_name)
+                Amity.ls_rooms[random_ls].append(new_fellow.full_name.upper())
+                print("Added: %s and allocated them to a living space %s: " % (new_fellow.full_name, random_ls))
+            elif not random_ls and random_office:
+                Amity.unallocated_person[new_fellow.full_name.upper()] = position
+                print('Added %s to the unallocated list' % new_fellow.full_name)
+                Amity.office_rooms[random_office].append(new_fellow.full_name.upper())
+                print("Added: %s and allocated them to an office %s: " % (new_fellow.full_name, random_office))
+
+            else:
+                Amity.office_rooms[random_office].append(new_fellow.full_name.upper())
+                print("Added: %s and allocated them to %s: " % (new_fellow.full_name, random_office))
+                Amity.ls_rooms[random_ls].append(new_fellow.full_name.upper())
+                print("Added: %s and allocated them to %s: " % (new_fellow.full_name, random_ls))
+
+        elif position.upper() == 'F':
+            new_fellow = Fellow(person_id, firstname, lastname)
+            Amity.all_people[new_fellow.full_name.upper()] = position
+            Amity.fellows.append(new_fellow.full_name.upper())
+            random_office = Amity.generate_random_office()
             if not random_office:
                 Amity.unallocated_person[new_fellow.full_name.upper()] = position
                 print('Added %s to the unallocated list' % new_fellow.full_name)
@@ -76,15 +88,21 @@ class Amity(object):
                 Amity.office_rooms[random_office].append(new_fellow.full_name.upper())
                 print("Added: %s and allocated them to %s: " % (new_fellow.full_name, random_office))
 
-            random_ls = Amity.generate_random_living_space()
-            if not random_ls:
-                Amity.unallocated_person[new_fellow.full_name.upper()] = position
-                print('Added %s to the unallocated list' % new_fellow.full_name)
+        elif position.upper() == 'S' and wants_accomodation.upper() == 'Y':
+            new_staff = Staff(person_id, firstname, lastname)
+            Amity.all_people[new_staff.full_name.upper()] = position
+            Amity.staffs.append(new_staff.full_name)
+            random_office = Amity.generate_random_office()
+            if not random_office:
+                Amity.unallocated_person[new_staff .full_name.upper()] = position
+                print('Added %s to the unallocated list' % new_staff.full_name)
+                print('Staff cannot be llocated a living space')
             else:
-                Amity.ls_rooms[random_ls].append(new_fellow.full_name.upper())
-                print("Added: %s and allocated them to %s: " % (new_fellow.full_name, random_ls))
+                Amity.office_rooms[random_office].append(new_staff.full_name.upper())
+                print("Added: %s and allocated them to %s: " % (new_staff.full_name, random_office))
+                print('Staff cannot be llocated a living space')
 
-        elif position.upper() == 'S' and wants_accomodation.upper() == 'N':
+        elif position.upper() == 'S':
             new_staff = Staff(person_id, firstname, lastname)
             Amity.all_people[new_staff.full_name.upper()] = position
             Amity.staffs.append(new_staff.full_name.upper())
@@ -96,19 +114,6 @@ class Amity(object):
                 Amity.office_rooms[random_office].append(new_staff.full_name.upper())
                 print("Added: %s and allocated them to %s: " % (new_staff.full_name, random_office))
 
-        elif position.upper() == 'S' and wants_accomodation.upper() == 'Y':
-            new_staff = Staff(person_id, firstname, lastname)
-            Amity.all_people[new_staff.full_name.upper()] = position
-            Amity.staffs.append(new_staff.full_name)
-            random_office = Amity.generate_random_office()
-            if not random_office:
-                Amity.unallocated_person[new_fellow.full_name.upper()] = position
-                print('Added %s to the unallocated list' % new_staff.full_name)
-            else:
-                Amity.office_rooms[random_office].append(new_staff.full_name.upper())
-                print("Added: %s and allocated them to %s: " % (new_staff.full_name, random_office))
-                print('Staff cannot be llocated a living space')
-                
         else:
             print('%s is not a valid position.' % position)
 
@@ -208,17 +213,17 @@ class Amity(object):
         '''
         prints a room and all the people allocated to that room
         '''
-
         if room_name.upper() in Amity.office_rooms.keys():
             print(room_name.upper())
             print('-' * 50)
             print(', '.join(Amity.office_rooms[room_name.upper()]))
 
-        if room_name.upper() in Amity.ls_rooms.keys():
+        elif room_name.upper() in Amity.ls_rooms.keys():
             print(room_name.upper())
             print('-' * 50)
             print(' ,'.join(Amity.ls_rooms[room_name.upper()]))
-
+        else:
+            print('There is no room called %s in Amity' % room_name)
 
     @staticmethod
     def print_allocations(filename=''):
@@ -342,7 +347,7 @@ class Amity(object):
         db_session.close()
 
     @staticmethod
-    def save_state(db_name=None):
+    def save_state(db_name='default_db'):
         '''
         Saves the data in the app to the database
         '''

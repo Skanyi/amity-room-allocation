@@ -56,14 +56,6 @@ class TestAmity(TestCase):
         current_fellow_count = len(Amity.fellows)
         self.assertEqual(previous_fellow_count + 1, current_fellow_count, 'Person fellow has not been added')
 
-    def test_does_not_generate_random_office_from_office_rooms_thats_full(self):
-        with self.assertRaises(Exception):
-            Amity.generate_random_office()
-
-    def test_does_not_generate_random_living_space_from_ls_rooms_thats_full(self):
-        with self.assertRaises(Exception):
-            Amity.generate_random_living_space()
-
     def test_return_random_office_room(self):
         Amity.create_room('Carmel', 'O')
         Amity.create_room('Narnia', 'O')
